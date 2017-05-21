@@ -1,6 +1,6 @@
 
 
-sPTNormaliserWarp <- function(rasterBrick, windowwidth,spatiaNormPercentile,output_name,cpus) {
+stFeatures_normalise_local<- function(rasterBrick, windowwidth,spatiaNormPercentile,output_name,cpus) {
   library("raster")
   library("rgdal")
   require("doParallel")
