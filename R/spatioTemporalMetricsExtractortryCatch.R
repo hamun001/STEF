@@ -77,7 +77,7 @@
 #'
 #'
 
-stFeatures_monitor <- function(inraster,my_dates, mYear, spatiaNormPercentile,threshold, densityPlot,windowwidth,tryCatchError,sPatioNormalixse, ...) {
+stef_monitor <- function(inraster,my_dates, mYear, spatiaNormPercentile,threshold, densityPlot,windowwidth,tryCatchError,sPatioNormalixse, ...) {
   library("raster")
   library("rgdal")
   library("spatial.tools")
