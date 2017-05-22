@@ -1,6 +1,6 @@
 
 
-#'@title Spatially normalise satellite images to reduce seasonal variations during forest cover change detection
+#'@title Normalise satellite images spatially  to reduce seasonal variations during forest cover change detection
 #'
 #'@description This function normalise satellite images spatially (see,  Hamunyela et al., 2016)
 #' NOTE: This function must always be called within the \code{\link[spatial.tools]{rasterEngine}} function. See the usage example
@@ -34,13 +34,13 @@
 #' imagedate <- decimal_date(seq(as.Date("2010-1-1"), as.Date("2016-12-30"), by = "month"))
 #'
 #' #single pixel processing example:
-#' rad <- rasterEngine(inraster=rasterBrick, fun=sPTNormaliser,window_dims=c(windowwidth=15,windowwidth =15),
+#' rad <- rasterEngine(inraster=rasterBrick, fun=stef_local_spatial_normaliser,window_dims=c(windowwidth=15,windowwidth =15),
 #'                    args=list(spatiaNormPercentile =95))
 #'
 #' #paralell processing example:
 #' ## register the cores
 #' sfQuickInit(cpus=5)
-#' rad <- rasterEngine(inraster=rasterBrick, fun=sPTNormaliser,window_dims=c(windowwidth=15,windowwidth =15),
+#' rad <- rasterEngine(inraster=rasterBrick, fun=stef_local_spatial_normaliser,window_dims=c(windowwidth=15,windowwidth =15),
 #'                    args=list(spatiaNormPercentile =95))
 #' writeRaster(rad, filename="test.tif",datatype ="FLT4S", overwrite=TRUE)
 #' # Unregister the cores
@@ -53,7 +53,7 @@
 #'
 #'
 #'
-sPTNormaliser <- function(inraster,spatiaNormPercentile =95,...) {
+stef_local_spatial_normaliser <- function(inraster,spatiaNormPercentile =95,...) {
   library("raster")
   library("rgdal")
   require("doParallel")

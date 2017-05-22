@@ -25,7 +25,7 @@
 #'@import doParallel
 #'@importFrom lubridate decimal_date
 #'@seealso \code{\link[spatial.tools]{rasterEngine}}
-#'@seealso \code{\link[SpaceTimeChangeDetection]{rasterEngine}}
+#'@seealso \code{\link[STEF]{rasterEngine}}
 #'@references 1. Hamunyela, E., Verbesselt, J., Herold, M. (2016) Using spatial context to improve early detection of deforestationfrom Landsat time series. Remote Sensing of Environment,172, 126â€“138.
 #'   \url{http://dx.doi.org/10.1016/j.rse.2015.11.006}
 #'
@@ -58,13 +58,13 @@
 #' imagedate <- decimal_date(seq(as.Date("2010-1-1"), as.Date("2016-12-30"), by = "month"))
 #'
 #' #single pixel processing example:
-#' rad <- rasterEngine(inraster=rasterBrick, fun=stFeatures_monitor,window_dims=c(windowwidth=15,windowwidth =15),
+#' rad <- rasterEngine(inraster=rasterBrick, fun=stef_monitor,window_dims=c(windowwidth=15,windowwidth =15),
 #'                    args=list(mYear = 2014,density = F,my_dates =imagedate,threshold = 0.01,spatiaNormPercentile =95, windowwidth =15,tryCatchError=T))
 #'
 #' #paralell processing example:
 #' ## register the cores
 #' sfQuickInit(cpus=5)
-#' rad <- rasterEngine(inraster=ra, fun=stFeatures_monitor,window_dims=c(windowwidth=15,windowwidth =15),
+#' rad <- rasterEngine(inraster=ra, fun=stef_monitor,window_dims=c(windowwidth=15,windowwidth =15),
 #'                    args=list(mYear = 2014,density = F,my_dates =imagedate,threshold = 0.01,spatiaNormPercentile =95, windowwidth =15,tryCatchError=T, sPatioNormalixse =T))
 #' writeRaster(rad, filename="test.tif",datatype ="FLT4S", overwrite=TRUE)
 #' # Unregister the cores
