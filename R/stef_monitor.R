@@ -35,10 +35,10 @@
 #'   3. Hamunyela, E., Reiche, J., Verbesselt, J., & Herold, M. Using space-time features to improve detection of forest disturbances from Landsat time series. Remote Sensing, in review
 #
 #'
-#'@return Returns a vector containing (1) the timing of a forest cover disturbance (the datetime of the image in which the disturbance is detected),(2) number of observations in the reference cube (period),
-#' (3) the standard deviation of the observations in the reference cube, (4) the actual threshold value corresponding to the percentile specified as 'threshold", (5) the magnitude of change (the difference between the actual threshold and the extreme observation ,
-#' (6) the number of consecutive extremes (can either be 2 for confirmed disturbance  or 1 if extreme observation is only occuring in the last image of the time series),
-#' (7) the number of neigbouring pixels (8-connected neigbours) whose observations are also qualifying as extremes at a time step before the central pixel experiences extreme event, (8) whether there are some neigbouring pixels (8-connected neigbours) whose observations are also qualifying as extremes at a time step before the central
+#'@return  Per pixel, it returns 18 values. 1) The date of the image in which the potential forest disturbnace is detected. 2) Number of valid observations in the local data cube over the reference period.
+#' 3) Standard deviation of the observations in the reference period of a local data cube. 4) The threshold for identifying negative anomalies, computed from the local data cube over the reference period, corresponding to the specified percentile(5th percentile). 5) Magnitude of change (the difference between the actual threshold and the negative anomalies,
+#' 6) The number of consecutive negative anomalies (is either 2 for two consecutive negative anomalies  or 1 if only the last observation in the time series is a negative anomaly).
+#' 7) the number of neigbouring pixels (8-connected neigbours) whose observations are also qualifying as extremes at a time step before the central pixel experiences extreme event, (8) whether there are some neigbouring pixels (8-connected neigbours) whose observations are also qualifying as extremes at a time step before the central
 #'  pixel experiences extreme event at the next time step  (this is either 1 for yes or 0 for No), (9) the number of neigbouring pixels (8-connected neigbours) whose observations are also qualifying as extremes at the same time step the central pixel is experiencing the extreme event,
 #'  (10) whether there are some neigbouring pixels (8-connected neigbours) whose observations are also qualifying as extremes at the time step the central
 #'  pixel is experiencing extreme event (this is also either 1 for yes or 0 for No), (11) whether are some of the  8-connected neigbours masked as non-forest based on th forest mask, (12) and the number of those 8-connected neigbours masked as non-forest.
