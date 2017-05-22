@@ -32,16 +32,17 @@
 #' 2. Hamunyela, E., Verbesselt, J.,de Bruin, S., Herold, M. (2016). Monitoring Deforestation at Sub-Annual Scales as Extreme Events in Landsat Data Cubes. Remote Sensing, 8(8), 651.
 #'  \url{http://dx.doi.org/10.3390/rs8080651}
 #'
-#'   3. Hamunyela, E., Reiche, J., Verbesselt, J., & Herold, M. Using space-time features to improve detection of forest disturbances from Landsat time series. Remote Sensing, in review
+#'   3. Hamunyela, E., Reiche, J., Verbesselt, J., & Herold, M. (2017). Using space-time features to improve detection of forest disturbances from Landsat time series. Remote Sensing, 9
 #
 #'
-#'@return  Per pixel, it returns 18 values. 1) The date of the image in which the potential forest disturbnace is detected. 2) Number of valid observations in the local data cube over the reference period.
-#' 3) Standard deviation of the observations in the reference period of a local data cube. 4) The threshold for identifying negative anomalies, computed from the local data cube over the reference period, corresponding to the specified percentile(5th percentile). 5) Magnitude of change (the difference between the actual threshold and the negative anomalies,
-#' 6) The number of consecutive negative anomalies (is either 2 for two consecutive negative anomalies  or 1 if only the last observation in the time series is a negative anomaly).
-#' 7) the number of neigbouring pixels (8-connected neigbours) whose observations are also qualifying as extremes at a time step before the central pixel experiences extreme event, (8) whether there are some neigbouring pixels (8-connected neigbours) whose observations are also qualifying as extremes at a time step before the central
-#'  pixel experiences extreme event at the next time step  (this is either 1 for yes or 0 for No), (9) the number of neigbouring pixels (8-connected neigbours) whose observations are also qualifying as extremes at the same time step the central pixel is experiencing the extreme event,
-#'  (10) whether there are some neigbouring pixels (8-connected neigbours) whose observations are also qualifying as extremes at the time step the central
-#'  pixel is experiencing extreme event (this is also either 1 for yes or 0 for No), (11) whether are some of the  8-connected neigbours masked as non-forest based on th forest mask, (12) and the number of those 8-connected neigbours masked as non-forest.
+#'@return Per pixel, it returns 18 values. (1) Numeric (e.g. 2017.353) - The date of the image in which the potential forest disturbnace is detected. (2) Number of valid observations in the local data cube over the reference period.
+#' (3) Continuous value  - Standard deviation of the observations in the reference period of a local data cube. (4) Continuous value  - The threshold for identifying negative anomalies, computed from the local data cube over the reference period, corresponding to the specified percentile(5th percentile). (5) Magnitude of change (the difference between the actual threshold and the negative anomalies,
+#' (5) Discrete-Numeric value - Number of consecutive negative anomalies (is either 2 for two consecutive negative anomalies  or 1 if only the last observation in the time series is a negative anomaly).
+#' (6) Discrete-Numeric value - Number of 8-connected neigbours for the focal pixel which also experienced negative anomalies at T1. (7) Binary (yes =1, no =0) value - Indicates whether any of the 8-connected neighbours for the focal pixel also experienced negative anomalies at T1. (8) Discrete-Numeric value - Number of 8-connected neighbours of the focal pixel which are also experiencing negative anomalies at T2.
+#' (9) Binary (yes =1, no =0) value - Indicates whether any of the 8-connected neighbours of the focal pixel is also experiencing negative anomalies at T2. (10) Discrete-Numeric value - Number of pixels in the local data cube which also experienced negative anomalies at T1.
+#' (11) Discrete-Numeric value - Number of pixels in local data cube with Negative anomalies at T2. (12) Binary (yes =1, no =0) value - Indicates whether any of the 8-connected neighbours for the focal pixel is already non-forest in the reference period.
+#' (13) Discrete-Numeric value - Number of the 8-connected neighbours for the focal pixel which are already non-forest in the reference period. 14) Discrete-Numeric value - Number of pixels within the local data cube which have been masked as non-forest in the reference period.
+#' (16)  Continuous value  - Cumulative sum of residuals for spatial variability at T1. (17) Continuous value  -  Cumulative sum of resdiuals for spatial variability at T2. (18) Continuous value  - Temporal linear trend in spatial variability.
 #'
 #'@examples
 #'\dontrun{
