@@ -9,7 +9,7 @@ STEF is a R package that provides functionality for space-time forest change mon
 ### Installing STEF from GitHub
 
 ```{r, eval=F, echo=T} 
-#### <span style="color:red">some first install devtools package text</span> 
+#### First install devtools package
 
 install.packages("devtools")
 
