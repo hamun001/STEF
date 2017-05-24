@@ -20,9 +20,9 @@ install_github("hamun001/STEF")
 
 ```
 
-## STEF functionality
+## STEF's functionality
 
-STEF provides the functionality for reducing seasonality and inter-sensor differences in satellite image time series. Seasonality and inter-sensor differences are reduced through spatial normaliastion.  STEF provides two spatial normalisation approach: Local and global. With local normalisation, a value of focal pixel is normalised using information derived from its neighbourhood. The size of the neigbourhood is defined by the user. The global normalisation uses information derived over entire image mosaic or single scence. STEF also provides functionality of monitoring forest change, and the functionality for calculating spatial accuracy is included (thanks to Dr Nandika Tsendbazar). Below some examples on how to use STEF's functionality are shown 
+In addition to forest change detection, STEF provides the functionality for reducing seasonality and inter-sensor differences in satellite image time series. Seasonality and inter-sensor differences are reduced through spatial normaliastion.  STEF provides two spatial normalisation approaches: Local and global. With local normalisation, a value of each pixel in the image is normalised using information derived from its neighbourhood. The size of the neigbourhood is defined by the user. The global normalisation uses information derived over entire image mosaic or single scence. STEF also provides functionality of monitoring forest change, and the functionality for calculating spatial accuracy is included (thanks to Dr Nandika Tsendbazar). Below some examples on how to use STEF's functionality are shown 
 
 ### Spatial normalisation to reduce seasonal variations 
 
@@ -38,3 +38,16 @@ ras <- brick()
 stef_global_spatial_normaliser(ras, isStack = T, xpercentile = 0.95,output_filename ="ra_global_normalised.tif")
 
 ```
+
+
+## References 
+
+1. Hamunyela, E., Verbesselt, J., Herold, M. (2016) Using spatial context to improve early detection of deforestationfrom Landsat time series. Remote Sensing of Environment,172, 126â€“138.\url{http://dx.doi.org/10.1016/j.rse.2015.11.006}
+
+2. Hamunyela, E., Verbesselt, J.,de Bruin, S., Herold, M. (2016). Monitoring Deforestation at Sub-Annual Scales as Extreme Events in Landsat Data Cubes. Remote Sensing, 8(8), 651.\url{http://dx.doi.org/10.3390/rs8080651}
+
+3. Hamunyela, E., Reiche, J., Verbesselt, J., & Herold, M. (2017). Using space-time features to improve detection of forest disturbances from Landsat time series. Remote Sensing, 9(6), 515.\url{http://dx.doi:10.3390/rs9060515}
+
+4. Hamunyela, E., Reiche, J., Verbesselt, J., Tsendbazar, N.E., & Herold, M. Combining Sentinel-2 and Landsat time series for small-scale forest change monitoring. In Prep.
+
+5. Reiche, J., Hamunyela, E., Verbesselt, J., Hoekman, D., & Herold, M. Improving near-real time deforestation monitoring in tropical dry forests by combining dense Sentinel-1 time series with Landsat and ALOS-2 PALSAR-2. Remote Sensing of Environment. In review.
