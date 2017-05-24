@@ -19,3 +19,17 @@ install.packages("devtools")
 install_github("hamun001/STEF")
 
 ```
+
+### Spatial normalisation to reduce seasonal variations 
+
+
+```{r, eval=F, echo=T} 
+
+#### read a raster stack
+ras <- brick()
+
+#### apply global spatial normalisation
+
+stef_global_spatial_normaliser(ras, isStack = T, xpercentile = 0.95,output_filename ="ra_global_normalised.tif")
+
+```

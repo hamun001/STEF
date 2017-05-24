@@ -2,6 +2,7 @@
 
 export(LandsatDataMaskCloudsShadowWaterSnow)
 export(spatialAccurayAssessment)
+export(stef_global_spatial_normaliser)
 export(stef_local_spatial_normaliser)
 export(stef_monitor)
 export(ybfastmonitorNorm)
