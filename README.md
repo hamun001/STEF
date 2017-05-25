@@ -32,13 +32,15 @@ Local spatial normalisation is recommended for areas where deciduous and evergre
 
 ```{r, eval=F, echo=T} 
 ##### load the required packages (make sure these packages are installed)
-require(spatial.tools)
+
+require("spatial.tools")
 require("raster")
 require("rgdal")
 require("doParallel")
 require("STEF")
 
 ##### read a raster stack
+
 ras <- brick()
 
 
@@ -51,27 +53,32 @@ rad <- rasterEngine(inraster=rasterBrick, fun=stef_local_spatial_normaliser,wind
 #####paralell processing example:
 
 ##### register the cores
+
 sfQuickInit(cpus=5)
 rad <- rasterEngine(inraster=rasterBrick, fun=stef_local_spatial_normaliser,window_dims=c(windowwidth=15,windowwidth =15),
                    args=list(spatiaNormPercentile =95))
+                   
 # Unregister the cores
+
 sfQuickStop()
 
 ```
 
 #### 2. Global spatial normalisation 
 
-Global spatial normalisation is recommended for areas where  deciduous and evergreen forests do not co-exist. It is much fast than local normalisation, and it should be applied separately even when you want to use STEF for change detection. *stef_global_spatial_normaliser* function which does global normalisation can be applied to single image or a stack of images; 
+Global spatial normalisation is recommended for areas where  deciduous and evergreen forests do not co-exist. It is much fast than local normalisation, and it should be applied separately even when you want to use STEF for change detection. *stef_global_spatial_normaliser* function which does global normalisation can be applied to a single image or a stack of images; 
 
 ```{r, eval=F, echo=T} 
 ##### load the required packages 
+
 require("raster")
 require("rgdal")
 require("doParallel")
-require(spatial.tools)
+require("spatial.tools")
 require("STEF")
 
 ##### read a raster stack
+
 ras <- brick()
 
 ##### apply global spatial normalisation
@@ -85,22 +92,30 @@ STEF detects forest disturbances using *stef_monitor* function, which is called 
 
 
 ```{r, eval=F, echo=T} 
-##### load the required packages 
+##### load the required packages
+
 require("raster")
 require("rgdal")
+require("doParallel")
+require("spatial.tools")
 require("STEF")
 
 #####sequential processing example:
+
 rad <- rasterEngine(inraster=rasterBrick, fun=stef_monitor,window_dims=c(windowwidth=15,windowwidth =15),
                     args=list(mYear = 2014,density = F,my_dates =imagedate,threshold = 0.01,spatiaNormPercentile =95, windowwidth=15,tryCatchError=T))
 
 #####paralell processing example:
+
 ##### register the cores
+
 sfQuickInit(cpus=5)
+
 rad <- rasterEngine(inraster=ra, fun=stef_monitor,window_dims=c(windowwidth=15,windowwidth =15),
         args=list(mYear = 2014,density = F,my_dates =imagedate,threshold = 0.01,spatiaNormPercentile =95, windowwidth=15,tryCatchError=T,sPatioNormalixse =T))
         
 #####Unregister the cores
+
 sfQuickStop()
 
 
