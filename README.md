@@ -10,12 +10,12 @@ STEF is a R package that provides functionality for space-time forest change mon
 
 ```{r, eval=F, echo=T}
 
-# First install devtools package
+## First install devtools package
 
 install.packages("devtools")
 
 
-# Then install STEF package 
+## Then install STEF package 
 
 install_github("hamun001/STEF")
 
@@ -33,7 +33,7 @@ Local spatial normalisation is recommended for areas where deciduous and evergre
 
 ```{r, eval=F, echo=T} 
 
-# load the required packages (make sure these packages are installed)
+## load the required packages (make sure these packages are installed)
 
 require("spatial.tools")
 require("raster")
@@ -41,26 +41,26 @@ require("rgdal")
 require("doParallel")
 require("STEF")
 
-# read a raster stack
+## read a raster stack
 
 ras <- brick()
 
 
-# sequential processing example:
+## sequential processing example:
 
 rad <- rasterEngine(inraster=rasterBrick, fun=stef_local_spatial_normaliser,window_dims=c(windowwidth=15,windowwidth =15),
                    args=list(spatiaNormPercentile =95))
                    
                    
-# paralell processing example:
+## paralell processing example:
 
-# register the cores
+## register the cores
 
 sfQuickInit(cpus=5)
 rad <- rasterEngine(inraster=rasterBrick, fun=stef_local_spatial_normaliser,window_dims=c(windowwidth=15,windowwidth =15),
                    args=list(spatiaNormPercentile =95))
                    
-# Unregister the cores
+## Unregister the cores
 
 sfQuickStop()
 
@@ -72,7 +72,7 @@ Global spatial normalisation is recommended for areas where  deciduous and everg
 
 ```{r, eval=F, echo=T}
 
-# load the required packages 
+## load the required packages 
 
 require("raster")
 require("rgdal")
@@ -80,11 +80,11 @@ require("doParallel")
 require("spatial.tools")
 require("STEF")
 
-# read a raster stack
+## read a raster stack
 
 ras <- brick()
 
-# apply global spatial normalisation
+## apply global spatial normalisation
 
 stef_global_spatial_normaliser(ras, isStack = T, xpercentile = 0.95,output_filename ="ra_global_normalised.tif")
 
@@ -96,7 +96,7 @@ STEF detects forest disturbances using *stef_monitor* function, which is called 
 
 ```{r, eval=F, echo=T}
 
-# load the required packages
+## load the required packages
 
 require("raster")
 require("rgdal")
@@ -104,21 +104,21 @@ require("doParallel")
 require("spatial.tools")
 require("STEF")
 
-# sequential processing example:
+## sequential processing example:
 
 rad <- rasterEngine(inraster=rasterBrick, fun=stef_monitor,window_dims=c(windowwidth=15,windowwidth =15),
                     args=list(mYear = 2014,density = F,my_dates =imagedate,threshold = 0.01,spatiaNormPercentile =95, windowwidth=15,tryCatchError=T))
 
-# paralell processing example:
+## paralell processing example:
 
-# register the cores
+## register the cores
 
 sfQuickInit(cpus=5)
 
 rad <- rasterEngine(inraster=ra, fun=stef_monitor,window_dims=c(windowwidth=15,windowwidth =15),
         args=list(mYear = 2014,density = F,my_dates =imagedate,threshold = 0.01,spatiaNormPercentile =95, windowwidth=15,tryCatchError=T,sPatioNormalixse =T))
         
-# unregister the cores
+## unregister the cores
 
 sfQuickStop()
 
