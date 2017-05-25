@@ -123,7 +123,7 @@ sfQuickStop()
 
 ## References 
 
-1. Hamunyela, E., Verbesselt, J., Herold, M. (2016) Using spatial context to improve early detection of deforestationfrom Landsat time series. Remote Sensing of Environment,172, 126-138.\url{http://dx.doi.org/10.1016/j.rse.2015.11.006}
+1. Hamunyela, E., Verbesselt, J., Herold, M. (2016). Using spatial context to improve early detection of deforestationfrom Landsat time series. Remote Sensing of Environment,172, 126-138.\url{http://dx.doi.org/10.1016/j.rse.2015.11.006}
 
 2. Hamunyela, E., Verbesselt, J.,de Bruin, S., Herold, M. (2016). Monitoring Deforestation at Sub-Annual Scales as Extreme Events in Landsat Data Cubes. Remote Sensing, 8(8), 651.\url{http://dx.doi.org/10.3390/rs8080651}
 
