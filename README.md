@@ -45,7 +45,6 @@ require("STEF")
 
 ras <- brick()
 
-
 ## sequential processing example:
 
 rad <- rasterEngine(inraster=rasterBrick, fun=stef_local_spatial_normaliser,window_dims=c(windowwidth=15,windowwidth =15),
@@ -133,6 +132,6 @@ sfQuickStop()
 
 3. Hamunyela, E., Reiche, J., Verbesselt, J., & Herold, M. (2017). Using space-time features to improve detection of forest disturbances from Landsat time series. Remote Sensing, 9(6), 515.\url{http://dx.doi:10.3390/rs9060515}
 
-4. Hamunyela, E., Reiche, J., Verbesselt, J., Tsendbazar, N.E., & Herold, M. Combining Sentinel-2 and Landsat time series for small-scale forest change monitoring. In Prep.
+4. Hamunyela, E., Reiche, J., Verbesselt, J., Tsendbazar, N.E., & Herold, M. Combining Sentinel-2 and Landsat time series for small-scale forest change monitoring. In prep.
 
 5. Reiche, J., Hamunyela, E., Verbesselt, J., Hoekman, D., & Herold, M. Improving near-real time deforestation monitoring in tropical dry forests by combining dense Sentinel-1 time series with Landsat and ALOS-2 PALSAR-2. Remote Sensing of Environment. In review.
