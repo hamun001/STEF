@@ -8,7 +8,7 @@ STEF is a R package that provides functionality for space-time forest change mon
 2. Multi-sensor data combination (E.g. Landsat, Sentinels and RapidEye)
 3. Detection of small-scale and low-magnitude forest changes
 
-# -------------------------How to use STEF--------------------------------
+# ----------------------How to use STEF-------------------------
 
 
 ### Installing STEF from GitHub
