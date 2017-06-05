@@ -5,7 +5,7 @@
 STEF is a R package that provides functionality for space-time forest change monitoring using observations from multiple satellites. STEF exploits both spatial and temporal information in the time series of satellite observations to identify forest disturbnaces. Potential forest disturbances are identified as "extreme events" in local data cubes of satellite observations. Once potential forest disturbance is idenified at the pixel level, STEF extracts several spatio-temporal features. Using  Machine learning algorithm (e.g. Random forest),spatio-temporal features are the used calculate the probability of forest disturbances. A probability threshold is then used to discriminate forest disturbances from false detections. STEF is developed for near real-time forest change monitoring, but it can also be used to map historcal forest disturbances.STEF is developed specifically to facilitate robust:
 
 1. Near real-time forest change detection in dry forest where strong seasonality in photosynthesis exist.
-2. Multi-sensor data combination (E.g. Landsat, Sentinels and RapidEye)
+2. Multi-sensor data harmonisation for forest change detection (E.g. Landsat, Sentinels and RapidEye)
 3. Detection of small-scale and low-magnitude forest changes
 
 # ----------------------How to use STEF-------------------------
@@ -28,7 +28,7 @@ install_github("hamun001/STEF")
 
 ## STEF's functionality
 
-In addition to forest change detection, STEF provides the functionality for reducing seasonality and inter-sensor differences in satellite image time series. Seasonality and inter-sensor differences are reduced through spatial normaliastion.  STEF provides two spatial normalisation approaches: Local and global. With local normalisation, a value of each pixel in the image is normalised using information derived from its neighbourhood. The size of the neigbourhood is defined by the user. The global normalisation uses information derived over entire image mosaic or single scence. STEF also provides functionality of monitoring forest change, and the functionality for calculating spatial accuracy is included (thanks to Dr Nandika Tsendbazar).  Examples on how to use STEF's functionality are shown below.
+In addition to forest change detection, STEF provides the functionality for reducing seasonality and inter-sensor differences in satellite image time series. Seasonality and inter-sensor differences are reduced through spatial normaliastion.  STEF provides two spatial normalisation approaches: Local and global. With local normalisation, a value of each pixel in the image is normalised using information derived from its neighbourhood. The size of the neigbourhood is defined by the user. The global normalisation uses information derived over entire image mosaic or single scence. STEF also provides functionality of monitoring forest change, and the functionality for calculating spatial accuracy is included (thanks to Dr Nandika Tsendbazar). Examples on how to use STEF's functionality are shown below.
 
 ### Using STEF to reduce seasonal variations and inter-sensor differences in image time series 
 
@@ -76,7 +76,7 @@ Global spatial normalisation is recommended for areas where  deciduous and everg
 
 ```{r, eval=F, echo=T}
 
-## load the required packages 
+## load the required packages (make sure these packages are installed on your computer).
 
 require("raster")
 require("rgdal")
@@ -102,7 +102,7 @@ STEF detects forest disturbances using *stef_monitor* function, which is called 
 
 ```{r, eval=F, echo=T}
 
-## load the required packages
+## load the required packages (make sure these packages are installed on your computer)
 
 require("raster")
 require("rgdal")
@@ -112,7 +112,7 @@ library(utils)
 require("STEF")
 require("randomForest")
 
-# read the raster stack (NDVI raster stack,  30m resolution). It contains 183 NDVI layers, for 2013 through 2016, acquired by Landsat 7, 8 and Sentinel-2A sensors. Note that this test data set is pre-processed already, and is ready for analysis. Also note that the data set is already normalised spatially using the global spatial normalisation.
+# read the raster stack of NDVI (normalised difference vegetation index,  30m resolution). It contains 183 NDVI layers, for 2013 through 2016, acquired by Landsat 7, 8 and Sentinel-2A sensors. Note that this test data set is pre-processed already, and is ready for analysis. Also note that the data set is already normalised spatially using the global spatial normalisation.
 
 re_test <- brick("data/L7L8S2_30m_ndvi_kafa_Global_subset.tif")
 
