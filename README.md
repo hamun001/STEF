@@ -116,18 +116,9 @@ require("randomForest")
 
 
 
+# read the raster stack (NDVI raster stack,  30m resolution). It contains 183 NDVI layers, for 2013 through 2016, acquired by Landsat 7, 8 and Sentinel-2A sensors. Note that this test data set is pre-processed already, and is ready for analysis. Also note that the data set is already normalised spatially using the global spatial normalisation.
 
-fl_mn <- list.files("/media/disk2/hamun001/PAPER4DATA/L7L8S2_30m/MASKED", pattern=glob2rx("*.tif"), recursive=F)
-
-
-# download a test dataset (NDVI raster stack,  30m resolution) from my dropbox. It contains 183 NDVI layers, for 2013 through 2016, acquired by Landsat 7, 8 and Sentinel-2A sensors. Note that this test data set is pre-processed already, and is ready for analysis. Also note that the data set is already normalised spatially using the global spatial normalisation.
-
-download.file ("https://www.dropbox.com/s/y4lmvxph77vb9dy/L7L8S2_30m_ndvi_kafa_Global_subset.tif?dl=1", destfile='L7L8S2_30m_ndvi_kafa_Global_subset.tif')
-
-
-# read the raster stack from your local folder (where the downloaded file is)
-
-re_test <- brick("L7L8S2_30m_ndvi_kafa_Global_subset.tif")
+re_test <- brick("data/L7L8S2_30m_ndvi_kafa_Global_subset.tif")
 
 # extract a subset from the test data set
 
@@ -142,7 +133,6 @@ my_dates <- readRDS(file = "data/my_dates.rds")
 plot (raster(re_test, 1))
 
 ## We start the monitoring in 2016. Note this may take long, depending on your computer 
-
 
 
 ## sequential processing example:
