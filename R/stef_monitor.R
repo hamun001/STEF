@@ -1,8 +1,8 @@
 
-#'@title Detects forest cover disturbances as extreme events in space-time data cubes of satellite images
+#'@title Detects forest disturbances as extreme events in space-time data cubes of satellite images
 #'
 #'@description This function detects extreme events (observations) at sub-annual scales in the space-time data cubes of satellite images.
-#' Extreme observations are identified at pixel level, and the extremeness is defined based on percentile (e.g 5th percentile). The observations in the data cube are normalised spatially to reduce seasonality, a procedure carried out within this function, if specified, otherwise it is assumed that data have been normlised already.
+#' Extreme observations are identified at pixel level, and the extremeness is defined based on percentile (e.g 5th percentile). The observations in the data cube are normalised spatially to reduce seasonality, a procedure carried out within this function, if specified, otherwise it is assumed that data have been normlised already. Once an extreme event is detected,the function extracts several space-time feature from local data cube.
 #' The function is intended for near real-time deforestation monitoring using satellite image time series.It is scalable to multiple cores (See usage example).
 #' NOTE: This function must always be called within the \code{\link[spatial.tools]{rasterEngine}} function. See the usage example
 #'@param inraster    Input raster stack. Note that this input is literally the a local spac-time data cube whose dimensions are defined by the user.

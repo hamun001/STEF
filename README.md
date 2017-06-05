@@ -2,14 +2,13 @@
 
 ## Welcome to STEF (Space-Time Extremes and Features) package! 
  
-STEF is a R package that provides functionality for space-time forest change monitoring using observations from multiple satellites. STEF exploits both spatial and temporal information in the time series of satellite observations to identify forest disturbnaces. Potential forest disturbances are identified as "extreme events" in local data cubes of satellite observations. Once potential forest disturbance is idenified at the pixel level, STEF extracts several spatio-temporal features. Using  Machine learning algorithm (e.g. Random forest),spatio-temporal features are the used calculate the probability of forest disturbances. A probability threshold is then used to discriminate forest disturbances from false detections. STEF is developed for near real-time forest change monitoring, but it can also be used to map historcal forest disturbances. 
-
-STEF is specifically developed to facilitate robust:
+STEF is a R package that provides functionality for space-time forest change monitoring using observations from multiple satellites. STEF exploits both spatial and temporal information in the time series of satellite observations to identify forest disturbnaces. Potential forest disturbances are identified as "extreme events" in local data cubes of satellite observations. Once potential forest disturbance is idenified at the pixel level, STEF extracts several spatio-temporal features. Using  Machine learning algorithm (e.g. Random forest),spatio-temporal features are the used calculate the probability of forest disturbances. A probability threshold is then used to discriminate forest disturbances from false detections. STEF is developed for near real-time forest change monitoring, but it can also be used to map historcal forest disturbances.STEF is developed specifically to facilitate robust:
 
 1. Near real-time forest change detection in dry forest where strong seasonality in photosynthesis exist.
-2. Multi-sensor data combination
+2. Multi-sensor data combination (E.g. Landsat, Sentinels and RapidEye)
 3. Detection of small-scale and low-magnitude forest changes
 
+# -------------------------How to use STEF--------------------------------
 
 
 ### Installing STEF from GitHub
@@ -95,11 +94,10 @@ stef_global_spatial_normaliser(ras, isStack = T, xpercentile = 0.95,output_filen
 
 ```
 
-download.file ("https://www.dropbox.com/s/y4lmvxph77vb9dy/L7L8S2_30m_ndvi_kafa_Global_subset.tif?dl=1", destfile='localfile.zip')
 
 ### Monitoring forest changes using STEF 
 
-STEF detects forest disturbances using *stef_monitor* function, which is called using *rasterEngine* function from *spatial.tools* package. The change detection can be scaled to many cores or can be done sequentiallly. 
+STEF detects forest disturbances using *stef_monitor* function, which is called using *rasterEngine* function from *spatial.tools* package. The change detection can be scaled to multiple cores or can be done sequentiallly. 
 
 
 ```{r, eval=F, echo=T}
@@ -113,8 +111,6 @@ require("spatial.tools")
 library(utils)
 require("STEF")
 require("randomForest")
-
-
 
 # read the raster stack (NDVI raster stack,  30m resolution). It contains 183 NDVI layers, for 2013 through 2016, acquired by Landsat 7, 8 and Sentinel-2A sensors. Note that this test data set is pre-processed already, and is ready for analysis. Also note that the data set is already normalised spatially using the global spatial normalisation.
 
@@ -141,7 +137,6 @@ rad <- rasterEngine(inraster=re_testx, fun=stef_monitor,window_dims=c(windowwidt
                     args=list(mYear = 2016,density = F,my_dates =my_dates,threshold = 0.05,spatiaNormPercentile =95, windowwidth=9,tryCatchError=F))
 
 
-
 ## paralell processing example:
 
 ## register the cores
@@ -154,7 +149,6 @@ rad <- rasterEngine(inraster=re_testx, fun=stef_monitor,window_dims=c(windowwidt
 ## unregister the cores
 
 sfQuickStop()
-
 
 # use random forest model to calculate the probability of forest disturbance 
 
