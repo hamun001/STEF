@@ -186,6 +186,8 @@ names(cMap) <- c("Date_of_forest_disturbance", "Probability_of_forest_disturbanc
 plot(cMap)
 
 ```
+plot(cMap)
+
 
 ## References 
 
