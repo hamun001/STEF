@@ -2,7 +2,13 @@
 
 ## Welcome to STEF (Space-Time Extremes and Features) package! 
  
-STEF is a R package that provides functionality for space-time forest change monitoring using observations from multiple satellites. STEF exploits both spatial and temporal information in the time series of satellite observations to identify forest disturbnaces. Potential forest disturbances are identified as "extreme events" in local data cubes of satellite observations. Once potential forest disturbance is idenified at pixel level, STEF extracts several spatio-temporal features. With training data, the user can then use the machine learning algorithm (e.g. Random forest) to discriminate real forest disturbances from false detections using the spatio-temporal features. STEF is developed for near real-time forest change monitoring, but it can also be used to map historcal forest disturbances. 
+STEF is a R package that provides functionality for space-time forest change monitoring using observations from multiple satellites. STEF exploits both spatial and temporal information in the time series of satellite observations to identify forest disturbnaces. Potential forest disturbances are identified as "extreme events" in local data cubes of satellite observations. Once potential forest disturbance is idenified at the pixel level, STEF extracts several spatio-temporal features. Using  Machine learning algorithm (e.g. Random forest),spatio-temporal features are the used calculate the probability of forest disturbances. A probability threshold is then used to discriminate forest disturbances from false detections. STEF is developed for near real-time forest change monitoring, but it can also be used to map historcal forest disturbances. 
+
+STEF is specifically developed to facilitate robust:
+
+1. Near real-time forest change detection in dry forest where strong seasonality in photosynthesis exist.
+2. Multi-sensor data combination
+3. Detection of small-scale and low-magnitude forest changes
 
 
 
@@ -88,6 +94,9 @@ ras <- brick()
 stef_global_spatial_normaliser(ras, isStack = T, xpercentile = 0.95,output_filename ="ra_global_normalised.tif")
 
 ```
+
+download.file ("https://www.dropbox.com/s/y4lmvxph77vb9dy/L7L8S2_30m_ndvi_kafa_Global_subset.tif?dl=1", destfile='localfile.zip')
+
 ### Monitoring forest changes using STEF 
 
 STEF detects forest disturbances using *stef_monitor* function, which is called using *rasterEngine* function from *spatial.tools* package. The change detection can be scaled to many cores or can be done sequentiallly. 
@@ -101,26 +110,96 @@ require("raster")
 require("rgdal")
 require("doParallel")
 require("spatial.tools")
+library(utils)
 require("STEF")
+require("randomForest")
+
+
+
+
+fl_mn <- list.files("/media/disk2/hamun001/PAPER4DATA/L7L8S2_30m/MASKED", pattern=glob2rx("*.tif"), recursive=F)
+
+
+# download a test dataset (NDVI raster stack,  30m resolution) from my dropbox. It contains 183 NDVI layers, for 2013 through 2016, acquired by Landsat 7, 8 and Sentinel-2A sensors. Note that this test data set is pre-processed already, and is ready for analysis. Also note that the data set is already normalised spatially using the global spatial normalisation.
+
+download.file ("https://www.dropbox.com/s/y4lmvxph77vb9dy/L7L8S2_30m_ndvi_kafa_Global_subset.tif?dl=1", destfile='L7L8S2_30m_ndvi_kafa_Global_subset.tif')
+
+
+# read the raster stack from your local folder (where the downloaded file is)
+
+re_test <- brick("L7L8S2_30m_ndvi_kafa_Global_subset.tif")
+
+# extract a subset from the test data set
+
+re_testx <- crop(re_test, c(810000, 820000, 820000,830000))
+
+# read the image acquistion dates. I save these in STEF/data directory
+
+my_dates <- readRDS(file = "data/my_dates.rds")
+
+#Plot the first layer in the raster stack
+
+plot (raster(re_test, 1))
+
+## We start the monitoring in 2016. Note this may take long, depending on your computer 
+
+
 
 ## sequential processing example:
 
-rad <- rasterEngine(inraster=rasterBrick, fun=stef_monitor,window_dims=c(windowwidth=15,windowwidth =15),
-                    args=list(mYear = 2014,density = F,my_dates =imagedate,threshold = 0.01,spatiaNormPercentile =95, windowwidth=15,tryCatchError=T))
+rad <- rasterEngine(inraster=re_testx, fun=stef_monitor,window_dims=c(windowwidth=15,windowwidth =15),
+                    args=list(mYear = 2016,density = F,my_dates =my_dates,threshold = 0.05,spatiaNormPercentile =95, windowwidth=9,tryCatchError=F))
+
+
 
 ## paralell processing example:
 
 ## register the cores
 
-sfQuickInit(cpus=5)
+sfQuickInit(cpus=16)
 
-rad <- rasterEngine(inraster=ra, fun=stef_monitor,window_dims=c(windowwidth=15,windowwidth =15),
-        args=list(mYear = 2014,density = F,my_dates =imagedate,threshold = 0.01,spatiaNormPercentile =95, windowwidth=15,tryCatchError=T,sPatioNormalixse =T))
+rad <- rasterEngine(inraster=re_testx, fun=stef_monitor,window_dims=c(windowwidth=9,windowwidth =9),
+        args=list(mYear = 2016,density = F,my_dates =my_dates,threshold = 0.05,spatiaNormPercentile =95, windowwidth=9,tryCatchError=T,sPatioNormalixse =F))
         
 ## unregister the cores
 
 sfQuickStop()
 
+
+# use random forest model to calculate the probability of forest disturbance 
+
+## read the training data (this data set was used by Hamunyela et al (2017))
+
+training_data <- readRDS(file = "data/trainingData.rds") # RC ==Real change; FC == False change
+
+# set the seed and training the random forest model
+set.seed(100)
+
+rf_model <- randomForest(label ~ ., data=training_data,  ntree = 501, importance=TRUE,
+                         proximity=TRUE, probability = T)
+
+
+# Apply the trained random forest model to the entire image 
+
+## Exclude the first layer (date of change)
+radx <-subset(rad, c(2:nlayers(rad)))
+
+## rename the layers to the colnames in the training data
+names(radx) <- colnames(training_data)[1:17]
+
+## do the prediction
+m3 <- predict(radx,rf_model, type='prob',na.rm=TRUE, index=2)
+
+## plot the computed probability map for forest disturbance
+plot (m3)
+
+##Combine the date of change layer with the probability map for forest disturbance 
+
+cDate <-subset(rad, 1)
+
+cMap <- stack(cDate,m3)
+names(cMap) <- c("Date_of_forest_disturbance", "Probability_of_forest_disturbance")
+plot(cMap)
 
 ```
 
