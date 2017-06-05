@@ -187,11 +187,7 @@ plot(cMap)
 
 ```
 
-```{r, eval=T, echo=T}
 
-plot(cMap)
-
-```
 ## References 
 
 1. Hamunyela, E., Verbesselt, J., Herold, M. (2016). Using spatial context to improve early detection of deforestationfrom Landsat time series. Remote Sensing of Environment,172, 126-138.\url{http://dx.doi.org/10.1016/j.rse.2015.11.006}
