@@ -36,7 +36,12 @@
 #' }
 #' 
 #' # example:
-#' stef_global_spatial_normaliser(ra, isStack = T, xpercentile = 0.95,output_filename ="ra_global_normalised.tif")
+#' 
+#' ## Optical
+#' stef_global_spatial_OPTICAL_normaliser(ra, isStack = T, xpercentile = 0.95,output_filename ="ra_global_normalised.tif")
+#' 
+#' ## synthetic aperture radar (SAR)
+#' stef_global_spatial_SAR_normaliser(ra, isStack = T, xpercentile = 0.95,output_filename ="ra_global_normalised.tif")
 #' }
 
 #'@author Eliakim Hamunyela
@@ -45,7 +50,7 @@
 #'
 #'
 
-stef_global_spatial_normaliser <- function(inraster,  isStack = T, xpercentile =0.95, output_filename= NULL){
+stef_global_spatial_OPTICAL_normaliser <- function(inraster,  isStack = T, xpercentile =0.95, output_filename= NULL){
   require ("raster")
   require("rgdal")
   if (xpercentile > 1){
@@ -85,5 +90,47 @@ stef_global_spatial_normaliser <- function(inraster,  isStack = T, xpercentile =
   
 } 
 
+stef_global_spatial_SAR_normaliser <- function(inraster,  isStack = T, xpercentile =0.95, output_filename= NULL){
+  require ("raster")
+  require("rgdal")
+  if (xpercentile > 1){
+    print("xpercentile  can't be greater than 1. defaulting to  0.95")
+    xpercentile <- 0.95
+  }
+  
+  if (!is.null(output_filename)){
+    
+    if (isStack){
+      inraster <- brick(inraster)
+      inRast  <- raster(inraster, 1)
+      inRastInverse <- 1/abs(inRast)
+      xPer <- quantile(inRastInverse,  probs = xpercentile, type=7,names = FALSE)
+      norInRast <- inRastInverse/xPer
+      
+      for (i in 2: nlayers(inraster)){
+        inRast2 <- raster(inraster, i)
+        inRastInverse2 <- 1/abs(inRast2)
+        xPer2 <- quantile(inRastInverse2,  probs =xpercentile, type=7,names = FALSE)
+        norInRast2 <- inRastInverse2/xPer2
+        norInRast <- stack(norInRast,norInRast2)
+      }
+      
+    }else{
+      
+      inRast <- raster(inraster)
+      inRastInverse <- 1/abs(inRast)
+      xPer <- quantile(inRastInverse,  probs = xpercentile, type=7,names = FALSE)
+      norInRast <- inRastInverse/xPer
+    }
+    
+    writeRaster(norInRast, filename=output_filename,datatype ="FLT4S", overwrite=TRUE) 
+    
+  }else{ 
+    print("please provide the output filename with file format")
+    stop
+    
+  }
+  
+} 
 
 

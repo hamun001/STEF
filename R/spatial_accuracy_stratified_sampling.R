@@ -1,13 +1,13 @@
 #'@title Calculates accuracy of land/forest cover maps based on stratified sampling
 #'
-#'@description This function calculates accuracy of land/forest cover and its change mapping for sample collected using stratified random sampling. Accuracy estimates such as overall accuracies, class accuracies are calculated while correcting
-#'area bias in the sample representation that is recommended when the sample sites do not have equal inclusion probability. Area estimation of land/forest cover classes are also corrected for map error (Card 1982 and Olofsson et al 2014, Tsendbazar et al 2016).
+#'@description This function calculates accuracy of land/forest cover and its change mapping for sample collected using stratified random sampling. Accuracy estimates such as overall accuracies, class accuracies are calculated while correcting 
+#'area bias in the sample representation that is recommended when the sample sites do not have equal inclusion probability. Area estimation of land/forest cover classes are also corrected for map error (Card 1982 and Olofsson et al 2014, Tsendbazar et al 2016).  
 #'Area weighted or error adjusted accuracy and area estimation uses a normal confusion matrix based on sample counting and proportion of area of land/forest cover classes. Accuracy calculations
-#'by Card 1982 is implemented.
+#'by Card 1982 is implemented. 
 #'
-#'@param cm    Input confusion matrix where reference classes are represented in the columns and mapped classes are in the rows. It can be data.frame or matrix with equal number of rows and columns.
-#'@param area    A list containing the area proportions (between o to 1) of each classes within the mapped area.
-#'@param alpha   Value (1-confidence level) used for calculating z score for upper and lower limits of the accuracy estimates.
+#'@param cm    Input confusion matrix where reference classes are represented in the columns and mapped classes are in the rows. It can be data.frame or matrix with equal number of rows and columns. 
+#'@param area    A list containing the area proportions (between o to 1) of each classes within the mapped area. 
+#'@param alpha   Value (1-confidence level) used for calculating z score for upper and lower limits of the accuracy estimates. 
 #'@param all  Logical.If TRUE, returns all the accuracy estimates and area estimation
 #'@import stats
 #'
@@ -28,8 +28,8 @@
 #'    \item{\code{sample n} {-} {Total number of sample used for the analysis}}
 #'    \item{\code{overall accuracy} {-} {Overall accuracies based on sample-count based and area adjusted confusion matrices}}
 #'    \item{\code{overall accuracy variance} {-} {Variance of the overall accuracies based on sample-count based and area adjusted confusion matrices}}
-#'    \item{\code{o.a.upper limite} {-} {Upper limit of the overall accuracies based on the confidence level of 1Alpha e.g. 95 percent condence level 1-0.05}}
-#'    \item{\code{o.a.lower limit} {-} {Lower limit of the overall accuracies based on the confidence level of 1-Alpha e.g.95 percent condence level: 1-0.05}}
+#'    \item{\code{o.a.upper limit} {-} {Upper limit of the overall accuracies based on the confidence level of 1-Alpha e.g.95% condence level: 1-0.05}}
+#'    \item{\code{o.a.lower limit} {-} {Lower limit of the overall accuracies based on the confidence level of 1-Alpha e.g.95% condence level: 1-0.05}}
 #'    }
 #'    {\code{class_area_accuracy} : {Matrix of class \code{"numeric"}, containing class specific user's and producer's accuracies as well as area estimation of each classes adjusted for area bias for the sample selection and map error.}}
 #'    \itemize{
@@ -43,10 +43,10 @@
 #'    {\code{adjusted_conf_matrix} : {A confusion matrix that is corrected for adjusted for area bias for the sample selection.}}
 #'  }
 #'
-#' @author Nandika Tsendbazar
 #'
 #'@examples
 #'\dontrun{
+#'
 #'
 #' #preparing matrix
 #' cm<-c(48, 0, 2, 5, 1, 49, 0, 4, 1, 0, 47, 3, 0, 1, 1, 34)
@@ -56,8 +56,9 @@
 #' #proportions of the classes
 #' area<-c(0.4, 0.4, 0.14, 0.06)
 #' test.acc<-accuracy.stratified(cm1, area, alpha=0.05)
-#' }
-#'
+#' 
+#' @author Nandika Tsendbazar
+#' 
 #'
 accuracy.stratified<-function(cm, area, alpha=0.05) {
   #convert both data frames and vectors to matrices
@@ -68,7 +69,7 @@ accuracy.stratified<-function(cm, area, alpha=0.05) {
   nr<-nrow(cmx); nc<-ncol(cmx)
   if (nr != nc)
   { print("Error: matrix is not square"); break }
-
+  
   #descriptive statistics
   n<-sum(cmx)
   d<-diag(cmx); dsum<-sum(d); oa<-dsum/n
@@ -76,8 +77,8 @@ accuracy.stratified<-function(cm, area, alpha=0.05) {
   oul<-oa+(2*(sqrt(oav)))
   oll<-oa-(2*(sqrt(oav)))
   csum<-apply(cmx,2,sum); rsum<-apply(cmx,1,sum)
-
-
+  
+  
   #area  weighted matrix
   cmx_area<-matrix(0, nrow(cmx),ncol(cmx))
   for (i in 1:nrow(cmx)) {
@@ -85,16 +86,16 @@ accuracy.stratified<-function(cm, area, alpha=0.05) {
       cmx_area[i,j]<-cmx[i,j]/rsum[i]*area[i]
     }
   }
-
+  
   d_area<-diag(cmx_area)
-
+  
   #accuracy metrics
   oaw<-sum(d_area) # overall area weighted accuracy
   oawv<-sum(d_area*(area-d_area)/rsum)# variance
   tp<-apply(cmx_area,2,sum) # true proportion
   tpv <- numeric(ncol(cmx_area)) #true map proportion variance
   for (j in 1:ncol(cmx_area)) {
-    tpv[j]<-sum(cmx_area[,j]*(area[j]-cmx_area[,j]))/rsum[j]
+    tpv[j]<-sum(cmx_area[,j]*(area-cmx_area[,j])/rsum)
   }
   paw<-d_area/tp #producers accuracy area weighted
   #for variance of paw
@@ -102,43 +103,43 @@ accuracy.stratified<-function(cm, area, alpha=0.05) {
   diag(fake_m)=0
   er<-numeric(ncol(cmx_area))
   for (j in 1:ncol(cmx_area)) {
-    er[j]<-sum(fake_m[,j]*(area[j]-fake_m[,j])/rsum[j])
+    er[j]<-sum(fake_m[,j]*(area-fake_m[,j])/rsum)
   }
-  pawv<-(d_area*(tp^(-4))*((d_area*er)+(area-d_area)*((tp-d_area)^2)/rsum))
-
+  pawv<-(d_area*(tp^(-4))*((d_area*er)+(area-d_area)*(tp-d_area)^2/rsum))
+  
   # user accuracy area weighted eq18, card 1982
   uaw<-d/rsum
   uawv<-(d_area*(area-d_area))/((area^2)*rsum)
-
+  
   #confidence interval
-  oac<-qnorm(1-(alpha/2))*sqrt(oawv)
+  oac<-qnorm(1-(alpha/2))*sqrt(oawv) 
   oawul<-oaw+oac
   oawll<-oaw-oac
   tpc<-qnorm(1-(alpha/2))*sqrt(tpv)
   uac<-qnorm(1-(alpha/2))*sqrt(uawv)
-  pac<-qnorm(1-(alpha/2))*(sqrt(pawv))
-
+  pac<-qnorm(1-(alpha/2))*sqrt(pawv)
+  
   #true (error adjusted) proportion statistics
   tps<-data.frame(tp)
   row.names(tps)<-row.names(cmx)
   tps$tpc<-tpc
-
+  
   # all overall accuracies
   overall.area.weighted<-as.data.frame(rbind(n, oaw, oawv, oawul, oawll))
   overall.sample.count<-as.data.frame(rbind(n, oa, oav, oul, oll))
   overall<-cbind(overall.sample.count, overall.area.weighted)
   row.names(overall)<-c("sample n","overall accuracy","overall accuracy variance","o.a.upper limit","o.a.lower limit")
   colnames(overall)<-c("sample count", "area weighted")
-
+  
   #class specific accuracy statistics
   uas<-data.frame(uaw)
   row.names(uas)<-row.names(cmx)
   uas$uac<-uac
-
+  
   pas<-data.frame(paw)
   row.names(pas)<-row.names(cmx)
   pas$pac<-pac
-
+  
   #writing class specific results
   class.acc<-(tps);class.acc[3:4]<-uas; class.acc[5:6]<-pas
   #area adjusted (proportional confusion matrix)
@@ -149,6 +150,6 @@ accuracy.stratified<-function(cm, area, alpha=0.05) {
   output <- list(overall, class.acc, p.conf.m)
   names(output)<-c("overall_accuracy", "class_area_accuracy ","adjusted_conf_matrix")
   output
- }
+}
 
 
