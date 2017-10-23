@@ -90,8 +90,12 @@ ras <- brick()
 
 ## apply global spatial normalisation
 
-stef_global_spatial_normaliser(ras, isStack = T, xpercentile = 0.95,output_filename ="ra_global_normalised.tif")
+### for Optical time series 
 
+stef_global_spatial_OPTICAL_normaliser(ras, isStack = T, xpercentile = 0.95,output_filename ="ra_global_normalised.tif")
+
+### for SAR time series 
+stef_global_spatial_SAR_normaliser(ras, isStack = T, xpercentile = 0.95,output_filename ="ra_global_normalised.tif")
 ```
 
 
@@ -196,6 +200,6 @@ plot(cMap)
 
 3. Hamunyela, E., Reiche, J., Verbesselt, J., & Herold, M. (2017). Using space-time features to improve detection of forest disturbances from Landsat time series. Remote Sensing, 9(6), 515.\url{http://dx.doi:10.3390/rs9060515}
 
-4. Hamunyela, E., Reiche, J., Verbesselt, J., Tsendbazar, N.E., & Herold, M. Combining Sentinel-2 and Landsat time series for small-scale forest change monitoring. In prep.
+4. Hamunyela, E., Reiche, J., Verbesselt, J., Tsendbazar, N.E., & Herold, M. Evaluating how observation density and minimum mapping unit affect detection of forest disturbances using Sentinel-2 and Landsat images. Under review.
 
-5. Reiche, J., Hamunyela, E., Verbesselt, J., Hoekman, D., & Herold, M. Improving near-real time deforestation monitoring in tropical dry forests by combining dense Sentinel-1 time series with Landsat and ALOS-2 PALSAR-2. Remote Sensing of Environment. In review.
+5. Reiche, J., Hamunyela, E., Verbesselt, J., Hoekman, D., & Herold, M. Improving near-real time deforestation monitoring in tropical dry forests by combining dense Sentinel-1 time series with Landsat and ALOS-2 PALSAR-2. Remote Sensing of Environment. Accepted.
