@@ -1,12 +1,12 @@
 
-#'@title Global spatial normalisation
+
+#'@title Global spatial normalisation for SAR time series 
 #'
 #'@description Performs global spatial normalisation of satellite data to reduce seasonal variations and intersensor dfferences. For local spatial normalisation, see \code{\link[STEF]{stef_local_spatial_normaliser}} 
 #'@param inraster    Input raster stack or single raster. 
 #'@param isStack     Logical. Set to TRUE if the input raster is a raster stack.
 #'@param xpercentile The upper  percentile to use for normalisation. Default is 0.95, which represent 95th percentile.
 #'@param output_filename  The name of the output normalised raster or raster stack. The name must contain the file format (e.g. raster_normalised.tif)
-#'@export
 #'@import spatial.tools
 #'@import rgdal
 #'@import raster
@@ -36,59 +36,18 @@
 #' }
 #' 
 #' # example:
-#' 
-#' ## Optical
-#' stef_global_spatial_OPTICAL_normaliser(ra, isStack = T, xpercentile = 0.95,output_filename ="ra_global_normalised.tif")
+#'
 #' 
 #' ## synthetic aperture radar (SAR)
 #' stef_global_spatial_SAR_normaliser(ra, isStack = T, xpercentile = 0.95,output_filename ="ra_global_normalised.tif")
 #' }
-
+#'
 #'@author Eliakim Hamunyela
 #'@details To be completed.
 #'
 #'
 #'
 
-stef_global_spatial_OPTICAL_normaliser <- function(inraster,  isStack = T, xpercentile =0.95, output_filename= NULL){
-  require ("raster")
-  require("rgdal")
-  if (xpercentile > 1){
-    print("xpercentile  can't be greater than 1. defaulting to  0.95")
-    xpercentile <- 0.95
-  }
-  
-  if (!is.null(output_filename)){
-    
-    if (isStack){
-      inraster <- brick(inraster)
-      inRast  <- raster(inraster, 1)
-      xPer <- quantile(inRast,  probs = xpercentile, type=7,names = FALSE)
-      norInRast <- inRast/xPer
-      
-      for (i in 2: nlayers(inraster)){
-        inRast2 <- raster(inraster, i)
-        xPer2 <- quantile(inRast2,  probs =xpercentile, type=7,names = FALSE)
-        norInRast2 <- inRast2/xPer2
-        norInRast <- stack(norInRast,norInRast2)
-      }
-      
-    }else{
-      
-      inRast <- raster(inraster)
-      xPer <- quantile(inRast,  probs = xpercentile, type=7,names = FALSE)
-      norInRast <- inRast/xPer
-    }
-    
-    writeRaster(norInRast, filename=output_filename,datatype ="FLT4S", overwrite=TRUE) 
-    
-  }else{ 
-    print("please provide the output filename with file format")
-    stop
-    
-  }
-  
-} 
 
 stef_global_spatial_SAR_normaliser <- function(inraster,  isStack = T, xpercentile =0.95, output_filename= NULL){
   require ("raster")
@@ -132,5 +91,4 @@ stef_global_spatial_SAR_normaliser <- function(inraster,  isStack = T, xpercenti
   }
   
 } 
-
 
