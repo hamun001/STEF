@@ -7,6 +7,7 @@
 #'@param xpercentile The upper  percentile to use for normalisation. Default is 0.95, which represent 95th percentile.
 #'@param output_filename  The name of the output normalised raster or raster stack. The name must contain the file format (e.g. raster_normalised.tif)
 #'@import spatial.tools
+#'@export
 #'@import rgdal
 #'@import raster
 #'@import doParallel
