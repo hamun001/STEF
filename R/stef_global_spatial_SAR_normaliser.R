@@ -51,8 +51,6 @@
 
 
 stef_global_spatial_SAR_normaliser <- function(inraster,  isStack = T, xpercentile =0.95, output_filename= NULL){
-  require ("raster")
-  require("rgdal")
   if (xpercentile > 1){
     print("xpercentile  can't be greater than 1. defaulting to  0.95")
     xpercentile <- 0.95
@@ -61,14 +59,14 @@ stef_global_spatial_SAR_normaliser <- function(inraster,  isStack = T, xpercenti
   if (!is.null(output_filename)){
     
     if (isStack){
-      inraster <- brick(inraster)
-      inRast  <- raster(inraster, 1)
+      #inraster <- brick(inraster)
+      inRast  <- subset(inraster, 1, drop = F)
       inRastInverse <- 1/abs(inRast)
       xPer <- quantile(inRastInverse,  probs = xpercentile, type=7,names = FALSE)
       norInRast <- inRastInverse/xPer
       
       for (i in 2: nlayers(inraster)){
-        inRast2 <- raster(inraster, i)
+        inRast2 <- subset(inraster, i, drop =F)
         inRastInverse2 <- 1/abs(inRast2)
         xPer2 <- quantile(inRastInverse2,  probs =xpercentile, type=7,names = FALSE)
         norInRast2 <- inRastInverse2/xPer2
@@ -76,9 +74,7 @@ stef_global_spatial_SAR_normaliser <- function(inraster,  isStack = T, xpercenti
       }
       
     }else{
-      
-      inRast <- raster(inraster)
-      inRastInverse <- 1/abs(inRast)
+      inRastInverse <- 1/abs(inraster)
       xPer <- quantile(inRastInverse,  probs = xpercentile, type=7,names = FALSE)
       norInRast <- inRastInverse/xPer
     }

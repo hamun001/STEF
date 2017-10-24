@@ -49,8 +49,6 @@
 #'
 
 stef_global_spatial_OPTICAL_normaliser <- function(inraster,  isStack = T, xpercentile =0.95, output_filename= NULL){
-  require ("raster")
-  require("rgdal")
   if (xpercentile > 1){
     print("xpercentile  can't be greater than 1. defaulting to  0.95")
     xpercentile <- 0.95
@@ -59,22 +57,20 @@ stef_global_spatial_OPTICAL_normaliser <- function(inraster,  isStack = T, xperc
   if (!is.null(output_filename)){
     
     if (isStack){
-      inraster <- brick(inraster)
-      inRast  <- raster(inraster, 1)
+      #inraster <- brick(inraster)
+      inRast  <- subset(inraster, 1, drop = F)
       xPer <- quantile(inRast,  probs = xpercentile, type=7,names = FALSE)
       norInRast <- inRast/xPer
       
       for (i in 2: nlayers(inraster)){
-        inRast2 <- raster(inraster, i)
+        inRast2 <- subset(inraster, i, drop =F)
         xPer2 <- quantile(inRast2,  probs =xpercentile, type=7,names = FALSE)
         norInRast2 <- inRast2/xPer2
         norInRast <- stack(norInRast,norInRast2)
       }
       
     }else{
-      
-      inRast <- raster(inraster)
-      xPer <- quantile(inRast,  probs = xpercentile, type=7,names = FALSE)
+      xPer <- quantile(inraster,  probs = xpercentile, type=7,names = FALSE)
       norInRast <- inRast/xPer
     }
     
