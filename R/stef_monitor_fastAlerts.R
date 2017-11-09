@@ -81,7 +81,7 @@
 #'
 #'
 
-stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercentile,threshold, densityPlot,windowwidth,tryCatchError,sPatioNormalixse,changeProbability=NULL,rf_modelx=NULL, ...) {
+stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercentile,threshold, densityPlot,windowwidth,tryCatchError,sPatioNormalixse,changeProbability,rf_modelx,...) {
   library("raster")
   library("rgdal")
   library("spatial.tools")
