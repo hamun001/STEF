@@ -288,7 +288,7 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
                   dav <- as.numeric(c(currentv,vqs,vq,qt,vt8,CH,prePatch,NboursStep1,pxPatch, pxNboursStep2,preNExtremes,postNExtremes,
                                       nonforestNeig,NOofnonforestNeig,noOfNonForPixelsInCube,presdcum,postsdcum,sdTrend))
                   
-                  if (!is.null(ChangeProbability) & !is.null(rf_modelx)){
+                  if (!is.null(changeProbability) & !is.null(rf_modelx)){
                     
                     newdata <- data.frame( matrix(ncol = 18, nrow = 1))
                     colnames( newdata)<-c ("currentv","vqs","vq","qt","vt8", "CH",
@@ -300,7 +300,7 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
                     # predicted_class <- predict(rf_modelx,newdata)
                     p1 <- predict(rf_modelx, newdata, type = "prob")
                     
-                    if (p1 >= ChangeProbability){
+                    if (p1 >= changeProbability){
                       
                       davx <- c(currentv, p1)
                       chan <- 0
@@ -374,7 +374,7 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
     }else{dav <- as.numeric(c(NA, NA,NA,NA,NA, NA, NA,NA, NA,NA,NA,NA, NA, NA, NA,NA, NA, NA))}
     
     
-    if(!is.null(ChangeProbability) & !is.null(rf_modelx)){
+    if(!is.null(changeProbability) & !is.null(rf_modelx)){
       
       davo <- davx
     }else{
@@ -394,7 +394,8 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
   density <- density
   windowwidth <- windowwidth
   tryCatchError <- tryCatchError
-  ChangeProbability <- ChangeProbability
+  changeProbability <- changeProbability
+  rf_modelx <- rf_modelx
   if(!is.null(changeProbability) & !is.null(rf_modelx)){
     if(tryCatchError){
       result <-  tryCatch (spatioTemporalMetricsExtractorxc(dFrvx,my_dates, mYear,spatiaNormPercentile,threshold, density,windowwidth,sPatioNormalixse,changeProbability,rf_modelx),
