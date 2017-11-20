@@ -243,7 +243,7 @@ stef_monitor <- function(inraster,my_dates, mYear, spatiaNormPercentile,threshol
         pixelMean <- median(proCell, na.rm =T)
         pixelRs <- pixelV - pixelMean
         pixelRsx <- replace(pixelRs, is.na(pixelRs), 0)
-        pixelCumsum <- cumsum(pixelRsx, na.rm=T)
+        pixelCumsum <- cumsum(pixelRsx)
         rm(xdFrvx)
 
         # check the number of 8-connected neigbours whose observations are also extremes
