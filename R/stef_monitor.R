@@ -95,7 +95,7 @@ stef_monitor <- function(inraster,my_dates, mYear, spatiaNormPercentile,threshol
     a01 <- subset(a01, a01$date > mYear & !is.na(a01$proC) & !is.nan(a01$proC) & !is.infinite(a01$proC))
     xp <- NA
     CH <- NA
-    dav <- as.numeric(c(NA, NA,NA,NA,NA, NA, NA,NA, NA,NA,NA,NA, NA, NA, NA,NA, NA, NA))
+    dav <- as.numeric(c(NA, NA,NA,NA,NA, NA, NA,NA, NA,NA,NA,NA, NA, NA, NA,NA, NA, NA,NA,NA, NA, NA))
     if (length (a01$date) > 0){
       #rownames(dFrv) <- qdates
       dFrv$deci_date <- qdates
@@ -223,11 +223,28 @@ stef_monitor <- function(inraster,my_dates, mYear, spatiaNormPercentile,threshol
           return(sdx)
         }
         PnSD <- as.numeric(apply(xdFrvx, 1, sdIncube))
-        rm(xdFrvx)
+        
         # cumullative sum of the variability residuals
         Pndif <- PnSD - mean(PnSD, na.rm = T)
         PnSDo <- replace(Pndif, is.na(Pndif), 0)
         sdPn <- cumsum(PnSDo)
+        
+        #calculate spatio-temporal cv 
+        cvIncube <- function(yx){
+          yaxo <- as.numeric(yx)
+          #if(length(subset(yax, !is.na(yax) & !is.nan(yax) & yax > 0)) > 1 ){
+          cvx <- cv( subset(yaxo, !is.na(yaxo) & !is.nan(yaxo) & yaxo > 0))
+          #}else{sdx <- NA}
+          return(cvx)
+        }
+        PnCV <- as.numeric(apply(xdFrvx, 1, cvIncube))
+        
+        #calculate pixel-time series CUMSUM
+        pixelMean <- median(proCell, na.rm =T)
+        pixelRs <- pixelV - pixelMean
+        pixelRsx <- replace(pixelRs, is.na(pixelRs), 0)
+        pixelCumsum <- cumsum(pixelRsx, na.rm=T)
+        rm(xdFrvx)
 
         # check the number of 8-connected neigbours whose observations are also extremes
         pacths <- function(x,qta){
@@ -240,6 +257,8 @@ stef_monitor <- function(inraster,my_dates, mYear, spatiaNormPercentile,threshol
         xdata$extreme <-ExtreCube
         xdata$sdcum <- sdPn
         xdata$sdPnSD <- PnSD
+        xdata$pixelCumsum <- pixelCumsum
+        xdata$PnCV <- PnCV
 
         # linear trend in the variability
         if (length(subset(PnSD, !is.na(PnSD) & !is.nan(PnSD))) > 2){
@@ -270,6 +289,10 @@ stef_monitor <- function(inraster,my_dates, mYear, spatiaNormPercentile,threshol
                   postNExtremes <- xdata$extreme[sxz1]
                   presdcum <- xdata$sdcum[countx]
                   postsdcum <- xdata$sdcum[sxz1]
+                  prepixelCumsum <-xdata$pixelCumsum[countx]
+                  popixelCumsum <-xdata$pixelCumsum[sxz1]
+                  prePnCV <- xdata$PnCV[countx]
+                  poPnCV <- xdata$PnCV[sxz1]
                   sdTrend <- lmModelSlope
                   if (prePatch !=0){
                     NboursStep1 <- 1
@@ -282,11 +305,12 @@ stef_monitor <- function(inraster,my_dates, mYear, spatiaNormPercentile,threshol
                   vt8 <- xp -qt
                   CH <- 2
                   dav <- as.numeric(c(currentv,vqs,vq,qt,vt8,CH,prePatch,NboursStep1,pxPatch, pxNboursStep2,preNExtremes,postNExtremes,
-                                      nonforestNeig,NOofnonforestNeig,noOfNonForPixelsInCube,presdcum,postsdcum,sdTrend))
+                                      nonforestNeig,NOofnonforestNeig,noOfNonForPixelsInCube,presdcum,postsdcum,sdTrend,prepixelCumsum,popixelCumsum,
+                                      prePnCV,poPnCV))
                   chan <- 0
                 }else {
                   currentv <- NA
-                  dav <- as.numeric(c(currentv,NA, NA,NA,NA,NA, NA, NA,NA, NA,NA,NA,NA, NA, NA,NA, NA, NA))
+                  dav <- as.numeric(c(currentv,NA, NA,NA,NA,NA, NA, NA,NA, NA,NA,NA,NA, NA, NA,NA, NA, NA,NA,NA, NA, NA))
                   countx <- countx + 1
                 }
               }
@@ -301,6 +325,11 @@ stef_monitor <- function(inraster,my_dates, mYear, spatiaNormPercentile,threshol
                   postNExtremes <- xdata$extreme[length(xdata$x)]
                   presdcum <- xdata$sdcum[(length(xdata$x)-1)]
                   postsdcum <-  xdata$sdcum[length(xdata$x)]
+                  prepixelCumsum <-xdata$pixelCumsum[(length(xdata$x)-1)]
+                  popixelCumsum <-xdata$pixelCumsum[length(xdata$x)]
+                  prePnCV <- xdata$PnCV[(length(xdata$x)-1)]
+                  poPnCV <- xdata$PnCV[length(xdata$x)]
+                  
                   sdTrend <- lmModelSlope
                   if (prePatch != 0){
                     NboursStep1 <- 1
@@ -314,22 +343,23 @@ stef_monitor <- function(inraster,my_dates, mYear, spatiaNormPercentile,threshol
                   vt8 <- xp -qt
                   CH <- 1
                   dav <- as.numeric(c(currentv,vqs,vq,qt,vt8, CH,prePatch,NboursStep1,pxPatch, pxNboursStep2,preNExtremes,postNExtremes,
-                                      nonforestNeig,NOofnonforestNeig,noOfNonForPixelsInCube,presdcum,postsdcum,sdTrend))
+                                      nonforestNeig,NOofnonforestNeig,noOfNonForPixelsInCube,presdcum,postsdcum,sdTrend,prepixelCumsum,popixelCumsum,
+                                      prePnCV,poPnCV ))
                 }else{
-                  dav <- as.numeric(c(NA, NA,NA,NA,NA, NA, NA,NA, NA,NA,NA,NA, NA, NA, NA,NA, NA, NA))
+                  dav <- as.numeric(c(NA, NA,NA,NA,NA, NA, NA,NA, NA,NA,NA,NA, NA, NA, NA,NA, NA, NA,NA,NA, NA, NA))
                 }
               }
             }else{
               currentv <- NA
-              dav <- as.numeric(c(NA, NA,NA,NA,NA, NA, NA,NA, NA,NA,NA,NA, NA, NA, NA,NA, NA, NA))
+              dav <- as.numeric(c(NA, NA,NA,NA,NA, NA, NA,NA, NA,NA,NA,NA, NA, NA, NA,NA, NA, NA,NA,NA, NA, NA))
             }
           }else{
             currentv <- NA
-            dav <- as.numeric(c(NA, NA,NA,NA,NA, NA, NA,NA, NA,NA,NA,NA, NA, NA, NA,NA, NA, NA))
+            dav <- as.numeric(c(NA, NA,NA,NA,NA, NA, NA,NA, NA,NA,NA,NA, NA, NA, NA,NA, NA, NA,NA,NA, NA, NA))
           }
         }else{
           currentv <- NA
-          dav <- as.numeric(c(NA, NA,NA,NA,NA, NA, NA,NA, NA,NA,NA,NA, NA, NA, NA,NA, NA, NA))
+          dav <- as.numeric(c(NA, NA,NA,NA,NA, NA, NA,NA, NA,NA,NA,NA, NA, NA, NA,NA, NA, NA,NA,NA, NA, NA))
         }
         if (densityPlot == T){
           plot(density(dtaax))
@@ -337,9 +367,9 @@ stef_monitor <- function(inraster,my_dates, mYear, spatiaNormPercentile,threshol
           abline(v = qt, col = "red", lty = 2)
         }
       }else{
-        dav <- as.numeric(c(NA, NA,NA,NA,NA, NA, NA,NA, NA,NA,NA,NA, NA, NA, NA,NA, NA, NA))
+        dav <- as.numeric(c(NA, NA,NA,NA,NA, NA, NA,NA, NA,NA,NA,NA, NA, NA, NA,NA, NA, NA,NA,NA, NA, NA))
       }
-    }else{dav <- as.numeric(c(NA, NA,NA,NA,NA, NA, NA,NA, NA,NA,NA,NA, NA, NA, NA,NA, NA, NA))}
+    }else{dav <- as.numeric(c(NA, NA,NA,NA,NA, NA, NA,NA, NA,NA,NA,NA, NA, NA, NA,NA, NA, NA,NA,NA, NA, NA))}
     #print(dav)
     return (dav)
   }
@@ -356,10 +386,10 @@ stef_monitor <- function(inraster,my_dates, mYear, spatiaNormPercentile,threshol
   tryCatchError <- tryCatchError
   if(tryCatchError){
     result <-  tryCatch (spatioTemporalMetricsExtractorxc(dFrvx,my_dates, mYear,spatiaNormPercentile,threshold, density,windowwidth,sPatioNormalixse),
-                         error=function(e) as.numeric(c(NA, NA,NA,NA,NA, NA, NA,NA, NA,NA,NA,NA, NA, NA, NA,NA, NA, NA)),
-                         warning=function(w) as.numeric(c(NA, NA,NA,NA,NA, NA, NA,NA, NA,NA,NA,NA, NA, NA, NA,NA, NA, NA)))
+                         error=function(e) as.numeric(c(NA, NA,NA,NA,NA, NA, NA,NA, NA,NA,NA,NA, NA, NA, NA,NA, NA, NA,NA,NA, NA, NA)),
+                         warning=function(w) as.numeric(c(NA, NA,NA,NA,NA, NA, NA,NA, NA,NA,NA,NA, NA, NA, NA,NA, NA, NA,NA,NA, NA, NA)))
     if (inherits(result, c("error","warning"))){
-      result <- as.numeric(c(NA, NA,NA,NA,NA, NA, NA,NA, NA,NA,NA,NA, NA, NA, NA,NA, NA, NA))
+      result <- as.numeric(c(NA, NA,NA,NA,NA, NA, NA,NA, NA,NA,NA,NA, NA, NA, NA,NA, NA, NA,NA,NA, NA, NA))
     } else {
       result <- result
     }
