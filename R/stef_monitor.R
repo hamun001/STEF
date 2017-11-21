@@ -241,7 +241,7 @@ stef_monitor <- function(inraster,my_dates, mYear, spatiaNormPercentile,threshol
         
         #calculate pixel-time series CUMSUM
         pixelMean <- median(proCell, na.rm =T)
-        pixelRs <- pixelV - pixelMean
+        pixelRs <- proCell - pixelMean
         pixelRsx <- replace(pixelRs, is.na(pixelRs), 0)
         pixelCumsum <- cumsum(pixelRsx)
         rm(xdFrvx)
