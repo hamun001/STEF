@@ -269,7 +269,7 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
              # xdata <- subset ( xdata, xdata$deci_date > mYear)
                bba <- xdata$x
                print ("Here")
-               bbax <- replace(bba,  bba >= qt, 0)
+               bbax <- replace(bba,  bba > qt, 0)
                xbbax <- replace(bbax,   bbax < qt, 1)
               
                seq_sum <- function (x){
@@ -317,6 +317,9 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
              print(prePatch)
              print(pxPatch)
              print("Dooo")
+             print(countx)
+             print(length(xdata$indexx))
+             print (c(currentv, xp ,prePatch,pxPatch,preNExtremes,presdcum,postsdcum))
              if (prePatch !=0){
                print("AAAA")
                NboursStep1 <- 1
