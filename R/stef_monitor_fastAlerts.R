@@ -293,8 +293,9 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
              xdata$indexx <- indexx
              x1datx <- subset ( xdata, xdata$con > 0)
              print("Where")
+             print(length(x1datx$con))
              if(length(x1datx$con) > 0){
-             
+              print("why")
              countx <- x1datx$indexx[1]
              sxz1x <- countx -1
              
@@ -307,6 +308,7 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
              presdcum <- xdata$sdcum[sxz1x]
              postsdcum <- xdata$sdcum[countx]
              sdTrend <- lmModelSlope
+             print("May be")
              if (prePatch !=0){
                NboursStep1 <- 1
                prePatch <-  prePatch
@@ -321,7 +323,7 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
                                  nonforestNeig,NOofnonforestNeig,noOfNonForPixelsInCube,presdcum,postsdcum,sdTrend))
              
              }else{
-               
+               print("Ok")
                dav <- as.numeric(c(NA,NA, NA,NA,NA,NA, NA, NA,NA, NA,NA,NA,NA, NA, NA,NA, NA, NA))
              } 
              
