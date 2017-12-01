@@ -253,12 +253,17 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
         xdatap <- subset (xdata, !is.na(xdata$x) & !is.nan(xdata$x) & xdata$x < qt)
         xdatax <- subset (xdatap$deci_date , xdatap$deci_date >=  mYear)
         # Check for  extremes
+        print("Bad")
         if (length(xdatap$x) > 0 & length(xdatax) !=0){
           xdata <- subset (xdata, !is.na(xdata$x) & !is.nan(xdata$x ))
           xdat1 <- subset (xdata , xdata$deci_date <  mYear & xdata$x > qt )
+          print(length(xdat1$x))
+          print("What")
           if (length(xdat1$x) > 0){
             xdato <- subset (xdata$deci_date , round(xdata$deci_date, digits = 4) < mYear)
             xdata <- xdata[length(xdato):length(xdata$x),]
+            print(length(xdata$x) )
+            print("Sooo")
             if (length(xdata$x) > 1){
               
              # xdata <- subset ( xdata, xdata$deci_date > mYear)
@@ -326,7 +331,7 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
                print("Ok")
                dav <- as.numeric(c(NA,NA, NA,NA,NA,NA, NA, NA,NA, NA,NA,NA,NA, NA, NA,NA, NA, NA))
              } 
-             
+             print("Amen")
              
                                
 #                   if (!is.null(changeProbability) & !is.null(rf_modelx)){
