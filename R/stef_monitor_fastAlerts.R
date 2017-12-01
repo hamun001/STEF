@@ -263,7 +263,7 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
               
              # xdata <- subset ( xdata, xdata$deci_date > mYear)
                bba <- xdata$x
-               
+               print ("Here")
                bbax <- replace(bba,  bba >= qt, 0)
                xbbax <- replace(bbax,   bbax < qt, 1)
               
@@ -287,11 +287,12 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
                }
                
               aax1 <-  seq_sum(xbbax)
-              
+              print("Failed")
              indexx <- seq (1, length(aax1))
              xdata$con <- aax1
              xdata$indexx <- indexx
              x1datx <- subset ( xdata, xdata$con > 0)
+             print("Where")
              if(length(x1datx$con) > 0){
              
              countx <- x1datx$indexx[1]
