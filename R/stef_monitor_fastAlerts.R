@@ -385,15 +385,15 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
       }
     }else{dav <- as.numeric(c(NA, NA,NA,NA,NA, NA, NA,NA, NA,NA,NA,NA, NA, NA, NA,NA, NA, NA))}
     
-    
-    if(!is.null(changeProbability) & !is.null(rf_modelx)){
-      
-      davo <- davx
-    }else{
-      davo <- dav
-    }
+#     
+#     if(!is.null(changeProbability) & !is.null(rf_modelx)){
+#       
+#       davo <- davx
+#     }else{
+#       davo <- dav
+#     }
     #print(dav)
-    return (davo)
+    return (dav)
   }
   
   
