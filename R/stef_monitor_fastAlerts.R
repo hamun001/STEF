@@ -244,7 +244,8 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
         xdata$extreme <-ExtreCube
         xdata$sdcum <- sdPn
         xdata$sdPnSD <- PnSD
-        
+        print("length xdata")
+        print(length(xdata$x))
         # linear trend in the variability
         if (length(subset(PnSD, !is.na(PnSD) & !is.nan(PnSD))) > 2){
           lmModelSlope <-   as.numeric((coef(lm(formula = PnSD ~ deci_date, data = xdata))))[2]
@@ -261,8 +262,9 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
           print("What")
           if (length(xdat1$x) > 0){
             xdato <- subset (xdata$deci_date , round(xdata$deci_date, digits = 4) < mYear)
-            xdata <- xdata[(length(xdato)-1):length(xdata$x),]
-            print(length(xdata$x) )
+            xdata <- xdata[(length(xdato)-2):length(xdata$x),]
+            print(length(xdata$x))
+            print(xdata$x)
             print("Sooo")
             if (length(xdata$x) > 1){
               
@@ -293,6 +295,7 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
                
               aax1 <-  seq_sum(xbbax)
               print("Failed")
+             
              indexx <- seq (1, length(aax1))
              xdata$con <- aax1
              xdata$indexx <- indexx
@@ -321,27 +324,21 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
              print(length(xdata$indexx))
              print (c(currentv, xp ,prePatch,pxPatch,preNExtremes,presdcum,postsdcum))
              if (prePatch !=0){
-               print("AAAA")
                NboursStep1 <- 1
                prePatch <-  prePatch
              }else{NboursStep1 <- 0}
-             print("BBBB")
+           
              if (pxPatch != 0){
-               print("SEE")
                pxNboursStep2 <- 1
                pxPatch <-  pxPatch
              }else{pxNboursStep2 <- 0}
-             print("POOO")
              vt8 <- xp -qt
              CH <- 2
              dav <- as.numeric(c(currentv,vqs,vq,qt,vt8,CH,prePatch,NboursStep1,pxPatch, pxNboursStep2,preNExtremes,postNExtremes,
                                  nonforestNeig,NOofnonforestNeig,noOfNonForPixelsInCube,presdcum,postsdcum,sdTrend))
-             print("else")
              }else{
-               print("Ok")
                dav <- as.numeric(c(NA,NA, NA,NA,NA,NA, NA, NA,NA, NA,NA,NA,NA, NA, NA,NA, NA, NA))
              } 
-             print("Amen")
              
                                
 #                   if (!is.null(changeProbability) & !is.null(rf_modelx)){
