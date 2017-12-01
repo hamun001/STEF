@@ -302,6 +302,8 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
              x1datx <- subset ( xdata, xdata$con > 0)
              print("Where")
              print(length(x1datx$con))
+             print("print xdata again")
+             print(xdata)
              if(length(x1datx$con) > 0){
               print("why")
              countx <- x1datx$indexx[1]
