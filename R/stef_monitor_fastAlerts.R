@@ -315,18 +315,22 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
              sdTrend <- lmModelSlope
              print("May be")
              if (prePatch !=0){
+               print("AAAA")
                NboursStep1 <- 1
                prePatch <-  prePatch
              }else{NboursStep1 <- 0}
+             print("BBBB")
              if (pxPatch != 0){
+               print("SEE")
                pxNboursStep2 <- 1
                pxPatch <-  pxPatch
              }else{pxNboursStep2 <- 0}
+             print("POOO")
              vt8 <- xp -qt
              CH <- 2
              dav <- as.numeric(c(currentv,vqs,vq,qt,vt8,CH,prePatch,NboursStep1,pxPatch, pxNboursStep2,preNExtremes,postNExtremes,
                                  nonforestNeig,NOofnonforestNeig,noOfNonForPixelsInCube,presdcum,postsdcum,sdTrend))
-             
+             print("else")
              }else{
                print("Ok")
                dav <- as.numeric(c(NA,NA, NA,NA,NA,NA, NA, NA,NA, NA,NA,NA,NA, NA, NA,NA, NA, NA))
