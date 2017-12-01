@@ -252,7 +252,7 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
         vqs <- length(dtaax)
         xdatap <- subset (xdata, !is.na(xdata$x) & !is.nan(xdata$x) & xdata$x < qt)
         xdatax <- subset (xdatap$deci_date , xdatap$deci_date >=  mYear)
-        
+        # Check for  extremes
         if (length(xdatap$x) > 0 & length(xdatax) !=0){
           xdata <- subset (xdata, !is.na(xdata$x) & !is.nan(xdata$x ))
           xdat1 <- subset (xdata , xdata$deci_date <  mYear & xdata$x > qt )
@@ -260,97 +260,109 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
             xdato <- subset (xdata$deci_date , round(xdata$deci_date, digits = 4) < mYear)
             xdata <- xdata[length(xdato):length(xdata$x),]
             if (length(xdata$x) > 1){
-              countx <- 1
-              chan <- NA
-              # Check for consecutive extremes
-              while ( is.na(chan) & countx < (length(xdata$x) - 2)){
-                sxz1x <- countx -1
-                if (xdata$x[countx] < qt){#& xdata$x[sxz1] < qt){
-                  currentv <- round(xdata$deci_date[countx], digits = 4)
-                  xp <- round(xdata$x[countx],digits = 4)
-                  prePatch <- xdata$y[sxz1x]
-                  pxPatch <- xdata$y[countx]
-                  preNExtremes <- xdata$extreme[sxz1x]
-                  postNExtremes <- xdata$extreme[countx]
-                  presdcum <- xdata$sdcum[sxz1x]
-                  postsdcum <- xdata$sdcum[countx]
-                  sdTrend <- lmModelSlope
-                  if (prePatch !=0){
-                    NboursStep1 <- 1
-                    prePatch <-  prePatch
-                  }else{NboursStep1 <- 0}
-                  if (pxPatch != 0){
-                    pxNboursStep2 <- 1
-                    pxPatch <-  pxPatch
-                  }else{pxNboursStep2 <- 0}
-                  vt8 <- xp -qt
-                  CH <- 2
-                  dav <- as.numeric(c(currentv,vqs,vq,qt,vt8,CH,prePatch,NboursStep1,pxPatch, pxNboursStep2,preNExtremes,postNExtremes,
-                                      nonforestNeig,NOofnonforestNeig,noOfNonForPixelsInCube,presdcum,postsdcum,sdTrend))
-                  
-                  if (!is.null(changeProbability) & !is.null(rf_modelx)){
-                    
-                    newdata <- data.frame( matrix(ncol = 18, nrow = 1))
-                    colnames( newdata)<-c ("currentv","vqs","vq","qt","vt8", "CH",
-                                           "prePatch","NboursStep1","pxPatch", "pxNboursStep2","preNExtremes","postNExtremes",
-                                           "nonforestNeig","NOofnonforestNeig","noOfNonForPixelsInCube","presdcum","postsdcum","sdTrend")
-                    newdata[1,] <-  dav
-                    newdata <- newdata[,2:18]
-                    
-                    # predicted_class <- predict(rf_modelx,newdata)
-                    p1 <- predict(rf_modelx, newdata, type = "prob")
-                    
-                    if (p1 >= changeProbability){
-                      
-                      davx <- c(currentv, p1)
-                      chan <- 0
-                    }else{
-                      
-                      davx <- c(NA, NA)
-                      chan <- NA
-                    }
-                    
-                  }else{
-                    
-                    davx <- c(NA, NA)
-                    chan <- 0 
-                  }
-                  
-                }else {
-                  currentv <- NA
-                  dav <- as.numeric(c(currentv,NA, NA,NA,NA,NA, NA, NA,NA, NA,NA,NA,NA, NA, NA,NA, NA, NA))
-                  countx <- countx + 1
-                }
-              }
-              # check if only the last observation is an extreme
-#               if (is.na(dav[1])){
-#                 if(xdata$x[length(xdata$x)] < qt) {
-#                   currentv <- round(xdata$deci_date[length(xdata$x)], digits = 4)
-#                   xp <- round(xdata$x[length(xdata$x)],digits = 4)
-#                   prePatch <-xdata$y[(length(xdata$x)-1)]
-#                   pxPatch <- xdata$y[length(xdata$x)]
-#                   preNExtremes <- xdata$extreme[(length(xdata$x)-1)]
-#                   postNExtremes <- xdata$extreme[length(xdata$x)]
-#                   presdcum <- xdata$sdcum[(length(xdata$x)-1)]
-#                   postsdcum <-  xdata$sdcum[length(xdata$x)]
-#                   sdTrend <- lmModelSlope
-#                   if (prePatch != 0){
-#                     NboursStep1 <- 1
-#                     prePatch <-  prePatch
-#                   }else{NboursStep1 <- 0}
+              
+             # xdata <- subset ( xdata, xdata$deci_date > mYear)
+               bba <- xdata$x
+               
+               bbax <- replace(bba,  bba >= qt, 0)
+               xbbax <- replace(bbax,   bbax < qt, 1)
+              
+               seq_sum <- function (x){
+                 
+                 if (length(x) > 1){
+                   zy <- x[1]
+                   for (i in 2: length(x)){
+                     
+                     e <- i -1
+                     fe <- x[e] + x[i]
+                     zy <- c(zy, fe)
+                   }
+                   
+                 }else{
+                   
+                   zy <- x 
+                 }
+                 
+                 return(zy)
+               }
+               
+              aax1 <-  seq_sum(xbbax)
+              
+             indexx <- seq (1, length(aax1))
+             xdata$con <- aax1
+             xdata$indexx <- indexx
+             x1datx <- subset ( xdata, xdata$con > 0)
+             if(length(x1datx$con) > 0){
+             
+             countx <- x1datx$indexx[1]
+             sxz1x <- countx -1
+             
+             currentv <- round(xdata$deci_date[countx], digits = 4)
+             xp <- round(xdata$x[countx],digits = 4)
+             prePatch <- xdata$y[sxz1x]
+             pxPatch <- xdata$y[countx]
+             preNExtremes <- xdata$extreme[sxz1x]
+             postNExtremes <- xdata$extreme[countx]
+             presdcum <- xdata$sdcum[sxz1x]
+             postsdcum <- xdata$sdcum[countx]
+             sdTrend <- lmModelSlope
+             if (prePatch !=0){
+               NboursStep1 <- 1
+               prePatch <-  prePatch
+             }else{NboursStep1 <- 0}
+             if (pxPatch != 0){
+               pxNboursStep2 <- 1
+               pxPatch <-  pxPatch
+             }else{pxNboursStep2 <- 0}
+             vt8 <- xp -qt
+             CH <- 2
+             dav <- as.numeric(c(currentv,vqs,vq,qt,vt8,CH,prePatch,NboursStep1,pxPatch, pxNboursStep2,preNExtremes,postNExtremes,
+                                 nonforestNeig,NOofnonforestNeig,noOfNonForPixelsInCube,presdcum,postsdcum,sdTrend))
+             
+             }else{
+               
+               dav <- as.numeric(c(NA,NA, NA,NA,NA,NA, NA, NA,NA, NA,NA,NA,NA, NA, NA,NA, NA, NA))
+             } 
+             
+             
+                               
+#                   if (!is.null(changeProbability) & !is.null(rf_modelx)){
+#                     
+#                     newdata <- data.frame( matrix(ncol = 18, nrow = 1))
+#                     colnames( newdata)<-c ("currentv","vqs","vq","qt","vt8", "CH",
+#                                            "prePatch","NboursStep1","pxPatch", "pxNboursStep2","preNExtremes","postNExtremes",
+#                                            "nonforestNeig","NOofnonforestNeig","noOfNonForPixelsInCube","presdcum","postsdcum","sdTrend")
+#                     newdata[1,] <-  dav
+#                     newdata <- newdata[,2:18]
+#                     
+#                     # predicted_class <- predict(rf_modelx,newdata)
+#                     p1 <- predict(rf_modelx, newdata, type = "prob")
+#                     
+#                     if (p1 >= changeProbability){
+#                       
+#                       davx <- c(currentv, p1)
+#                       chan <- 0
+#                     }else{
+#                       
+#                       davx <- c(NA, NA)
+#                       chan <- NA
+#                     }
+#                     
+#                   }else{
+#                     
+#                     davx <- c(NA, NA)
+#                     chan <- 0 
+#                   }
 #                   
-#                   if (pxPatch != 0){
-#                     pxNboursStep2 <- 1
-#                     pxPatch <-  pxPatch
-#                   }else{pxNboursStep2 <- 0}
-#                   vt8 <- xp -qt
-#                   CH <- 1
-#                   dav <- as.numeric(c(currentv,vqs,vq,qt,vt8, CH,prePatch,NboursStep1,pxPatch, pxNboursStep2,preNExtremes,postNExtremes,
-#                                       nonforestNeig,NOofnonforestNeig,noOfNonForPixelsInCube,presdcum,postsdcum,sdTrend))
-#                 }else{
-#                   dav <- as.numeric(c(NA, NA,NA,NA,NA, NA, NA,NA, NA,NA,NA,NA, NA, NA, NA,NA, NA, NA))
+#                 }else {
+#                   currentv <- NA
+#                   dav <- as.numeric(c(currentv,NA, NA,NA,NA,NA, NA, NA,NA, NA,NA,NA,NA, NA, NA,NA, NA, NA))
+#                   countx <- countx + 1
 #                 }
 #               }
+#               
+
+              
             }else{
               currentv <- NA
               dav <- as.numeric(c(NA, NA,NA,NA,NA, NA, NA,NA, NA,NA,NA,NA, NA, NA, NA,NA, NA, NA))
