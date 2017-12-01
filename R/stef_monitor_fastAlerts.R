@@ -314,6 +314,9 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
              postsdcum <- xdata$sdcum[countx]
              sdTrend <- lmModelSlope
              print("May be")
+             print(prePatch)
+             print(pxPatch)
+             print("Dooo")
              if (prePatch !=0){
                print("AAAA")
                NboursStep1 <- 1
