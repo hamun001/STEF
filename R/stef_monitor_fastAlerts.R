@@ -262,7 +262,9 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
           print("What")
           if (length(xdat1$x) > 0){
             xdato <- subset (xdata$deci_date , round(xdata$deci_date, digits = 4) < mYear)
-            xdata <- xdata[(length(xdato)-4):length(xdata$x),]
+            xdata <- xdata[(length(xdato)-2):length(xdata$x),]
+            xdataT <- xdata[1:2,]
+            xdata <- xdata[3:length(xdata$x),]
             print(length(xdata$x))
             print(xdata$x)
             print("Sooo")
@@ -307,15 +309,23 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
              if(length(x1datx$con) > 0){
               print("why")
              countx <- x1datx$indexx[1]
-             sxz1x <- countx -1
              
+             if(countx == 1){
+               sxz1x <- length(xdataT$y)
+               prePatch <- xdataT$y[sxz1x]
+               preNExtremes <- xdataT$extreme[sxz1x]
+               presdcum <- xdataT$sdcum[sxz1x]
+             }else{
+               
+               sxz1x <- countx -1
+               prePatch <- xdata$y[sxz1x]
+               preNExtremes <- xdata$extreme[sxz1x]
+               presdcum <- xdata$sdcum[sxz1x]
+             }
              currentv <- round(xdata$deci_date[countx], digits = 4)
              xp <- round(xdata$x[countx],digits = 4)
-             prePatch <- xdata$y[sxz1x]
              pxPatch <- xdata$y[countx]
-             preNExtremes <- xdata$extreme[sxz1x]
              postNExtremes <- xdata$extreme[countx]
-             presdcum <- xdata$sdcum[sxz1x]
              postsdcum <- xdata$sdcum[countx]
              sdTrend <- lmModelSlope
              print("May be")
