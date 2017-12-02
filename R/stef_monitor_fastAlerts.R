@@ -244,8 +244,7 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
         xdata$extreme <-ExtreCube
         xdata$sdcum <- sdPn
         xdata$sdPnSD <- PnSD
-        print("length xdata")
-        print(length(xdata$x))
+
         # linear trend in the variability
         if (length(subset(PnSD, !is.na(PnSD) & !is.nan(PnSD))) > 2){
           lmModelSlope <-   as.numeric((coef(lm(formula = PnSD ~ deci_date, data = xdata))))[2]
@@ -254,25 +253,18 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
         xdatap <- subset (xdata, !is.na(xdata$x) & !is.nan(xdata$x) & xdata$x < qt)
         xdatax <- subset (xdatap$deci_date , xdatap$deci_date >=  mYear)
         # Check for  extremes
-        print("Bad")
         if (length(xdatap$x) > 0 & length(xdatax) !=0){
           xdata <- subset (xdata, !is.na(xdata$x) & !is.nan(xdata$x ))
           xdat1 <- subset (xdata , xdata$deci_date <  mYear & xdata$x > qt )
-          print(length(xdat1$x))
-          print("What")
           if (length(xdat1$x) > 0){
             xdato <- subset (xdata$deci_date , round(xdata$deci_date, digits = 4) < mYear)
             xdata <- xdata[(length(xdato)-2):length(xdata$x),]
             xdataT <- xdata[1:2,]
             xdata <- xdata[3:length(xdata$x),]
-            print(length(xdata$x))
-            print(xdata$x)
-            print("Sooo")
             if (length(xdata$x) > 1){
               
              # xdata <- subset ( xdata, xdata$deci_date > mYear)
                bba <- xdata$x
-               print ("Here")
                bbax <- replace(bba,  bba > qt, 0)
                xbbax <- replace(bbax,   bbax < qt, 1)
               
@@ -296,18 +288,11 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
                }
                
               aax1 <-  seq_sum(xbbax)
-              print("Failed")
-             
              indexx <- seq (1, length(aax1))
              xdata$con <- aax1
              xdata$indexx <- indexx
              x1datx <- subset ( xdata, xdata$con > 0)
-             print("Where")
-             print(length(x1datx$con))
-             print("print xdata again")
-             print(xdata)
              if(length(x1datx$con) > 0){
-              print("why")
              countx <- x1datx$indexx[1]
              
              if(countx == 1){
@@ -328,13 +313,6 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
              postNExtremes <- xdata$extreme[countx]
              postsdcum <- xdata$sdcum[countx]
              sdTrend <- lmModelSlope
-             print("May be")
-             print(prePatch)
-             print(pxPatch)
-             print("Dooo")
-             print(countx)
-             print(length(xdata$indexx))
-             print (c(currentv, xp ,prePatch,pxPatch,preNExtremes,presdcum,postsdcum))
              if (prePatch !=0){
                NboursStep1 <- 1
                prePatch <-  prePatch
