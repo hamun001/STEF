@@ -262,7 +262,7 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
           print("What")
           if (length(xdat1$x) > 0){
             xdato <- subset (xdata$deci_date , round(xdata$deci_date, digits = 4) < mYear)
-            xdata <- xdata[(length(xdato)-2):length(xdata$x),]
+            xdata <- xdata[(length(xdato)-4):length(xdata$x),]
             print(length(xdata$x))
             print(xdata$x)
             print("Sooo")
