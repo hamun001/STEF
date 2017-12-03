@@ -266,7 +266,7 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
              # xdata <- subset ( xdata, xdata$deci_date > mYear)
                bba <- xdata$x
                bbax <- replace(bba,  bba > qt, 0)
-               xbbax <- replace(bbax,   bbax < qt, 1)
+               xbbax <- replace(bbax,   bbax > 0, 1)
               print("bba")
               print(bba)
               print(" bbax")
