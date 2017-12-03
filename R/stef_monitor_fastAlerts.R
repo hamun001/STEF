@@ -292,6 +292,8 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
              xdata$con <- aax1
              xdata$indexx <- indexx
              x1datx <- subset ( xdata, xdata$con > 0)
+             print(qt)
+             print( xdata)
              if(length(x1datx$con) > 0){
              countx <- x1datx$indexx[1]
              
