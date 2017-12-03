@@ -267,7 +267,12 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
                bba <- xdata$x
                bbax <- replace(bba,  bba > qt, 0)
                xbbax <- replace(bbax,   bbax < qt, 1)
-              
+              print("bba")
+              print(bba)
+              print(" bbax")
+              print( bbax)
+              print("xbbax")
+              print(xbbax)
                seq_sum <- function (x){
                  
                  if (length(x) > 1){
