@@ -305,19 +305,21 @@ stef_monitor_fastAlertsProb <- function(inraster,my_dates, mYear, spatiaNormPerc
                 
                 return(zy)
               }
-              
+              print("May be")
               aax1 <-  seq_sum(xbbax)
               indexx <- seq (1, length(aax1))
               xdata$con <- aax1
               xdata$indexx <- indexx
               x1datx <- subset ( xdata, xdata$con > 0)
+              print("I did")
               if(length(x1datx$con) > 0){
-                
+                print ("What")
                 coxo <- length (x1datx$indexx)
                 coxn <- 1
                 chan <- NA
                 while(is.na(chan) & coxn <= coxo ){
                   countx <- x1datx$indexx[coxn]
+                  print("It is here")
                 if(countx == 1){
                   sxz1x <- length(xdataT$y)
                   prePatch <- xdataT$y[sxz1x]
@@ -370,6 +372,7 @@ stef_monitor_fastAlertsProb <- function(inraster,my_dates, mYear, spatiaNormPerc
                 probThreshold <- as.numeric(round(probThreshold, digits = 4))
                 probThreshold <- probThreshold[2]
                 
+                print("failed here")
                 if (probThreshold > changeProbability){
                   
                   dav <- c(currentv, probThreshold)
