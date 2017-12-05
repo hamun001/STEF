@@ -323,6 +323,7 @@ stef_monitor_fastAlertsProb <- function(inraster,my_dates, mYear, spatiaNormPerc
                   prePatch <- xdataT$y[sxz1x]
                   preNExtremes <- xdataT$extreme[sxz1x]
                   presdcum <- xdataT$sdcum[sxz1x]
+                  print("or here")
                   prePnCV <- xdata$PnCV[sxz1x]
                   prepixelCumsum <-xdata$pixelCumsum[sxz1x]
                 }else{
@@ -331,6 +332,7 @@ stef_monitor_fastAlertsProb <- function(inraster,my_dates, mYear, spatiaNormPerc
                   prePatch <- xdata$y[sxz1x]
                   preNExtremes <- xdata$extreme[sxz1x]
                   presdcum <- xdata$sdcum[sxz1x]
+                  print("is it here")
                   prePnCV <- xdata$PnCV[sxz1x]
                   prepixelCumsum <-xdata$pixelCumsum[sxz1x]
                 }
@@ -357,7 +359,7 @@ stef_monitor_fastAlertsProb <- function(inraster,my_dates, mYear, spatiaNormPerc
                                     nonforestNeig,NOofnonforestNeig,noOfNonForPixelsInCube,presdcum,postsdcum,sdTrend,prepixelCumsum,popixelCumsum,
                                     prePnCV,poPnCV))
                 
-                                    
+                print("Here")                   
                 newdata <- data.frame( matrix(ncol = 22, nrow = 1))
                 colnames( newdata)<-c ("currentv","vqs","vq","qt","vt8", "CH",
                                                            "prePatch","NboursStep1","pxPatch", "pxNboursStep2","preNExtremes","postNExtremes",
