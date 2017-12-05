@@ -364,13 +364,15 @@ stef_monitor_fastAlertsProb <- function(inraster,my_dates, mYear, spatiaNormPerc
                 colnames( newdata)<-c ("currentv","vqs","vq","qt","vt8", "CH",
                                                            "prePatch","NboursStep1","pxPatch", "pxNboursStep2","preNExtremes","postNExtremes",
                                                            "nonforestNeig","NOofnonforestNeig","noOfNonForPixelsInCube","presdcum","postsdcum","sdTrend",
-                                       "prepixelCumsum","popixelCumsum")
+                                       "prepixelCumsum","popixelCumsum","prePnCV","poPnCV")
                 newdata[1,] <-  davx
                 newdata <- newdata[,2:22]
                                     
                 # predicted_class <- predict(rf_modelx,newdata)
                 probThreshold <- predict(rf_modelx, newdata, type = "prob")
                 probThreshold <- round(probThreshold, digits = 4)
+                print("probThreshold")
+                print(probThreshold)
                 
                 if (probThreshold > changeProbability){
                   
