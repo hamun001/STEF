@@ -82,14 +82,14 @@
 #'
 #'
 
-stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercentile,threshold, densityPlot,windowwidth,tryCatchError,sPatioNormalixse,changeProbability,rf_modelx,...) {
+stef_monitor_fastAlertsProb <- function(inraster,my_dates, mYear, spatiaNormPercentile,threshold, densityPlot,windowwidth,tryCatchError,sPatioNormalixse,changeProbability,rf_modelx,...) {
   library("raster")
   library("rgdal")
   library("spatial.tools")
   require("doParallel")
   require("randomForest")
   
-  spatioTemporalMetricsExtractorxc <- function(dFrvx,my_dates, mYear,spatiaNormPercentile,threshold, densityPlot,windowwidth,sPatioNormalixse,changeProbability,rf_modelx){
+  spatioTemporalMetricsExtractorxcprob <- function(dFrvx,my_dates, mYear,spatiaNormPercentile,threshold, densityPlot,windowwidth,sPatioNormalixse,changeProbability,rf_modelx){
     dFrv <- dFrvx
     windowwidth <- windowwidth
     qdates <- my_dates
@@ -407,7 +407,7 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
         dav <- as.numeric(c(NA, NA))
       }
     }else{dav <- as.numeric(c(NA, NA))}
-    
+    print(dav)
     return (dav)
   }
   
@@ -425,7 +425,7 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
   rf_modelx <- rf_modelx
   
   if(tryCatchError){
-    result <-  tryCatch (spatioTemporalMetricsExtractorxc(dFrvx,my_dates, mYear,spatiaNormPercentile,threshold, density,windowwidth,sPatioNormalixse,changeProbability,rf_modelx),
+    result <-  tryCatch (spatioTemporalMetricsExtractorxcprob(dFrvx,my_dates, mYear,spatiaNormPercentile,threshold, density,windowwidth,sPatioNormalixse,changeProbability,rf_modelx),
                          error=function(e) as.numeric(c(NA, NA)),
                          warning=function(w) as.numeric(c(NA, NA)))
     if (inherits(result, c("error","warning"))){
@@ -435,7 +435,7 @@ stef_monitor_fastAlerts <- function(inraster,my_dates, mYear, spatiaNormPercenti
     }
   }else{
     
-    result <- spatioTemporalMetricsExtractorxc(dFrvx,my_dates, mYear,spatiaNormPercentile,threshold, density,windowwidth,sPatioNormalixse,changeProbability,rf_modelx)
+    result <- spatioTemporalMetricsExtractorxcprob(dFrvx,my_dates, mYear,spatiaNormPercentile,threshold, density,windowwidth,sPatioNormalixse,changeProbability,rf_modelx)
   }
   return(result)
 }
