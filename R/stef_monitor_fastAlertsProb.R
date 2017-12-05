@@ -314,7 +314,6 @@ stef_monitor_fastAlertsProb <- function(inraster,my_dates, mYear, spatiaNormPerc
                 coxo <- length (x1datx$indexx)
                 coxn <- 1
                 chan <- NA
-                print("pooopid")
                 while(is.na(chan) & coxn <= coxo ){
                   countx <- x1datx$indexx[coxn]
                 if(countx == 1){
@@ -366,25 +365,16 @@ stef_monitor_fastAlertsProb <- function(inraster,my_dates, mYear, spatiaNormPerc
                                     
                 # predicted_class <- predict(rf_modelx,newdata)
                 probThreshold <- predict(rf_modelx, newdata, type = "prob")
-                print("topo topo")
-                print(probThreshold )
                 probThreshold <- as.numeric(round(probThreshold, digits = 4))
                 probThreshold <- probThreshold[2]
-                
-                print("failed here")
-                print(probThreshold )
-                print("what is happening here")
                 if (probThreshold > changeProbability){
-                  print("What is really")
                   dav <- c(currentv, probThreshold)
                   chan <- 0
                 }else{
-                  print("Shiiit")
                   dav <- as.numeric(c(NA, NA))
                   chan <- NA
                   coxn <-coxn + 1
                 }
-                print("mani mani")
                 }
               }else{
                 dav <- as.numeric(c(NA,NA))
@@ -411,7 +401,6 @@ stef_monitor_fastAlertsProb <- function(inraster,my_dates, mYear, spatiaNormPerc
         dav <- as.numeric(c(NA, NA))
       }
     }else{dav <- as.numeric(c(NA, NA))}
-    print(dav)
     return (dav)
   }
   
