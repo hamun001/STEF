@@ -407,7 +407,7 @@ stef_monitor_fastAlertsProb <- function(inraster,my_dates, mYear, spatiaNormPerc
         dav <- as.numeric(c(NA, NA))
       }
     }else{dav <- as.numeric(c(NA, NA))}
-    print(dav)
+    #print(dav)
     return (dav)
   }
   
