@@ -190,7 +190,7 @@ stef_monitor <- function(inraster,my_dates, mYear, spatiaNormPercentile,threshol
 
         dtaa <- as.numeric((unlist(dFrv)))
         rm(dFrv)
-        dtaax <- subset(dtaa, !is.na(dtaa) & !is.nan(dtaa) & dtaa > 0)
+        dtaax <- subset(dtaa, !is.na(dtaa) & !is.nan(dtaa))
         rm(dtaa)
         qt <- round(as.numeric(quantile(dtaax, c(threshold), na.rm =T)),digits = 4)
         vq <- round(sd(dtaax, na.rm =T), digits = 4)
@@ -218,7 +218,7 @@ stef_monitor <- function(inraster,my_dates, mYear, spatiaNormPercentile,threshol
         sdIncube <- function(ya){
           yax <- as.numeric(ya)
           #if(length(subset(yax, !is.na(yax) & !is.nan(yax) & yax > 0)) > 1 ){
-          sdx <- sd( subset(yax, !is.na(yax) & !is.nan(yax) & yax > 0))
+          sdx <- sd( subset(yax, !is.na(yax) & !is.nan(yax)))
           #}else{sdx <- NA}
           return(sdx)
         }
@@ -233,7 +233,7 @@ stef_monitor <- function(inraster,my_dates, mYear, spatiaNormPercentile,threshol
         cvIncube <- function(yx){
           yaxo <- as.numeric(yx)
           #if(length(subset(yax, !is.na(yax) & !is.nan(yax) & yax > 0)) > 1 ){
-          cvx <- cv( subset(yaxo, !is.na(yaxo) & !is.nan(yaxo) & yaxo > 0))
+          cvx <- cv( subset(yaxo, !is.na(yaxo) & !is.nan(yaxo)))
           #}else{sdx <- NA}
           return(cvx)
         }
