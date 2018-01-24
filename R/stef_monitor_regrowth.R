@@ -78,13 +78,13 @@
 #'
 #'
 
-stef_monitor_regrowth <- function(inraster,my_dates, mYear, spatiaNormPercentile,threshold, densityPlot,windowwidth,tryCatchError,sPatioNormalixse, ...) {
+stef_monitor_regrowth <- function(inraster,my_dates, mYear, spatiaNormPercentile,threshold, densityPlot,windowwidth,tryCatchError,sPatioNormalixse,mextric, ...) {
   library("raster")
   library("rgdal")
   library("spatial.tools")
   require("doParallel")
   
-  spatioTemporalMetricsExtractorxc_regrowth <- function(dFrvx,my_dates, mYear,spatiaNormPercentile,threshold, densityPlot,windowwidth,sPatioNormalixse){
+  spatioTemporalMetricsExtractorxc_regrowth <- function(dFrvx,my_dates, mYear,spatiaNormPercentile,threshold, densityPlot,windowwidth,sPatioNormalixse, mextric){
     dFrv <- dFrvx
     windowwidth <- windowwidth
     qdates <- my_dates
@@ -95,8 +95,8 @@ stef_monitor_regrowth <- function(inraster,my_dates, mYear, spatiaNormPercentile
     a01 <- subset(a01, a01$date > mYear & !is.na(a01$proC) & !is.nan(a01$proC) & !is.infinite(a01$proC))
     xp <- NA
     CH <- NA
-    som <- rep(NA, length(proC) *6)
-    samo <- c(NA,NA,NA,rep(NA, length(proC) *6))
+    som <- rep(NA, length(proC))
+    samo <- c(NA,NA,NA,rep(NA, length(proC)))
     dav <- as.numeric(samo)
     if (length (a01$date) > 0){
       #rownames(dFrv) <- qdates
@@ -290,8 +290,27 @@ stef_monitor_regrowth <- function(inraster,my_dates, mYear, spatiaNormPercentile
                   prsdcum <- xdata$sdcum
                   prpixelCumsum <-xdata$pixelCumsum
                   prPnCV <- xdata$PnCV
-                  dav <- c(currentv,qt,sdTrend,vt8,prPatch,prNExtremes,prsdcum,prpixelCumsum,prPnCV,)
-                  chan <- 0
+                  
+                  if (mextric = 1){
+                    dav <- c(currentv,qt,sdTrend,vt8)
+                    chan <- 0
+                    
+                  }else if (mextric = 2) {
+                    dav <- c(currentv,qt,sdTrend,prPatch)
+                    chan <- 0
+                  }else if (mextric = 3){
+                    dav <- c(currentv,qt,sdTrend,prNExtremes)
+                    chan <- 0
+                  }else if(mextric = 4){
+                    dav <- c(currentv,qt,sdTrend,prsdcum)
+                    chan <- 0
+                  }else if(mextric = 5){
+                    dav <- c(currentv,qt,sdTrend,prpixelCumsum)
+                    chan <- 0
+                  }else{
+                    dav <- c(currentv,qt,sdTrend,prPnCV)
+                    chan <- 0
+                  }
                 }else {
                   dav <- as.numeric(samo)
                   countx <- countx + 1
@@ -363,10 +382,11 @@ stef_monitor_regrowth <- function(inraster,my_dates, mYear, spatiaNormPercentile
   threshold <- threshold
   density <- density
   windowwidth <- windowwidth
+  mextric <- mextric
   tryCatchError <- tryCatchError
-  samo <- c(NA,NA,NA,rep(NA, length(my_dates) *6))
+  samo <- c(NA,NA,NA,rep(NA, length(my_dates)))
   if(tryCatchError){
-    result <-  tryCatch (spatioTemporalMetricsExtractorxc_regrowth(dFrvx,my_dates, mYear,spatiaNormPercentile,threshold, density,windowwidth,sPatioNormalixse),
+    result <-  tryCatch (spatioTemporalMetricsExtractorxc_regrowth(dFrvx,my_dates, mYear,spatiaNormPercentile,threshold, density,windowwidth,sPatioNormalixse,mextric ),
                          error=function(e) as.numeric(samo),
                          warning=function(w) as.numeric(samo))
     if (inherits(result, c("error","warning"))){
@@ -376,7 +396,7 @@ stef_monitor_regrowth <- function(inraster,my_dates, mYear, spatiaNormPercentile
     }
   }else{
     
-    result <- spatioTemporalMetricsExtractorxc_regrowth(dFrvx,my_dates, mYear,spatiaNormPercentile,threshold, density,windowwidth,sPatioNormalixse)
+    result <- spatioTemporalMetricsExtractorxc_regrowth(dFrvx,my_dates, mYear,spatiaNormPercentile,threshold, density,windowwidth,sPatioNormalixse,mextric)
   }
   return(result)
 }
