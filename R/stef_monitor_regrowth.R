@@ -291,20 +291,20 @@ stef_monitor_regrowth <- function(inraster,my_dates, mYear, spatiaNormPercentile
                   prpixelCumsum <-xdata$pixelCumsum
                   prPnCV <- xdata$PnCV
                   
-                  if (mextric = 1){
+                  if (mextric == 1){
                     dav <- c(currentv,qt,sdTrend,vt8)
                     chan <- 0
                     
-                  }else if (mextric = 2) {
+                  }else if (mextric == 2) {
                     dav <- c(currentv,qt,sdTrend,prPatch)
                     chan <- 0
-                  }else if (mextric = 3){
+                  }else if (mextric == 3){
                     dav <- c(currentv,qt,sdTrend,prNExtremes)
                     chan <- 0
-                  }else if(mextric = 4){
+                  }else if(mextric == 4){
                     dav <- c(currentv,qt,sdTrend,prsdcum)
                     chan <- 0
-                  }else if(mextric = 5){
+                  }else if(mextric == 5){
                     dav <- c(currentv,qt,sdTrend,prpixelCumsum)
                     chan <- 0
                   }else{
