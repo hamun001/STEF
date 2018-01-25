@@ -290,7 +290,7 @@ stef_monitor_regrowth <- function(inraster,my_dates, mYear, spatiaNormPercentile
                   prsdcum <- xdata$sdcum
                   prpixelCumsum <-xdata$pixelCumsum
                   prPnCV <- xdata$PnCV
-                  
+                  sdTrend <- lmModelSlope
                   if (mextric == 1){
                     dav <- c(currentv,qt,sdTrend,vt8)
                     chan <- 0
