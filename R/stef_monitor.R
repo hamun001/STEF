@@ -225,7 +225,11 @@ stef_monitor <- function(inraster,my_dates, mYear, spatiaNormPercentile,threshol
         PnSD <- as.numeric(apply(xdFrvx, 1, sdIncube))
         
         # cumullative sum of the variability residuals
-        Pndif <- PnSD - mean(PnSD, na.rm = T)
+        PnSDxo <- as.data.frame(PnSD)
+        PnSDxo$date <- xdata$deci_date
+        PnSDxo1 <- subset(PnSDxo, PnSDxo$date < mYear)
+        
+        Pndif <- PnSD - mean(PnSDxo1$PnSD, na.rm = T)
         PnSDo <- replace(Pndif, is.na(Pndif), 0)
         sdPn <- cumsum(PnSDo)
         
@@ -240,12 +244,14 @@ stef_monitor <- function(inraster,my_dates, mYear, spatiaNormPercentile,threshol
         PnCV <- as.numeric(apply(xdFrvx, 1, cvIncube))
         
         #calculate pixel-time series CUMSUM
-        pixelMean <- median(proCell, na.rm =T)
+        timRx <- subset (xdata, xdata$deci_date <  mYear)
+        proTel <- xdata$x
+        pixelMean <- median(proTel, na.rm =T)
         pixelRs <- proCell - pixelMean
         pixelRsx <- replace(pixelRs, is.na(pixelRs), 0)
         pixelCumsum <- cumsum(pixelRsx)
         rm(xdFrvx)
-
+        
         # check the number of 8-connected neigbours whose observations are also extremes
         pacths <- function(x,qta){
           y1 <- subset(x, !is.na(x) & x < qta)
