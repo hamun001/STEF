@@ -251,7 +251,7 @@ stef_monitor_fastAlertsProb <- function(inraster,my_dates, mYear, spatiaNormPerc
         
         #calculate pixel-time series CUMSUM
         timRx <- subset (xdata, xdata$deci_date <  mYear)
-        proTel <- xdata$x
+        proTel <- timRx$x
         pixelMean <- median(proTel, na.rm =T)
         pixelRs <- proCell - pixelMean
         pixelRsx <- replace(pixelRs, is.na(pixelRs), 0)
