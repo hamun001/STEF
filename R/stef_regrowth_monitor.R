@@ -432,7 +432,6 @@ stef_regrowth_monitor <- function(inraster,my_dates, mYear, spatiaNormPercentile
   threshold <- threshold
   density <- density
   windowwidth <- windowwidth
-  mextric <- mextric
   tryCatchError <- tryCatchError
   minimumRegrowthTime <- minimumRegrowthTime
   samo <- c(rep(NA, 17))
