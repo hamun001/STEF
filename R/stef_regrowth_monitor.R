@@ -336,7 +336,7 @@ stef_regrowth_monitor <- function(inraster,my_dates, mYear, spatiaNormPercentile
                   }
                   aax1 <-  seq_sum(xbbax)
                   sz_con <- length(subset(aax1, aax1 ==2))
-                  if (sz_con != 0){
+                  if (sz_con == 0){
                     
                     #pull out the slope for spatioCumsum
                     
