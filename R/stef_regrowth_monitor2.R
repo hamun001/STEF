@@ -98,7 +98,7 @@ stef_regrowth_monitor2 <- function(inraster,my_dates, mYear, spatiaNormPercentil
     xp <- NA
     CH <- NA
     som <- rep(NA, 19)
-    samo <- c(rep(NA, 17))
+    samo <- c(rep(NA, 19))
     dav <- as.numeric(samo)
     if (length (a01$date) > 0){
       #rownames(dFrv) <- qdates
@@ -336,6 +336,7 @@ stef_regrowth_monitor2 <- function(inraster,my_dates, mYear, spatiaNormPercentil
                     }
                     aax1 <-  seq_sum(xbbax)
                     
+                    print("I passed here")
                     if (aax1[length(aax1)] != 2 | aax1[length(aax1) -1] != 2){
                     
                       
@@ -359,7 +360,7 @@ stef_regrowth_monitor2 <- function(inraster,my_dates, mYear, spatiaNormPercentil
                     }
                     
                     time_length_after_regrowth_start <- non_ext$deci_date[length(non_ext$deci_date)]  - non_ext$deci_date[1] 
-                    
+                    print("I was here")
                     if (time_length_after_regrowth_start >= minimumRegrowthTime){
                       
                       lastExtremes <- after_disturba$extreme[length(after_disturba$extreme)]
@@ -485,7 +486,7 @@ stef_regrowth_monitor2 <- function(inraster,my_dates, mYear, spatiaNormPercentil
         dav <- as.numeric(samo)
       }
     }else{dav <- as.numeric(samo)}
-    #print(dav)
+    print(dav)
     return (dav)
   }
   
