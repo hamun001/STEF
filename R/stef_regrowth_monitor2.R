@@ -315,6 +315,7 @@ stef_regrowth_monitor2 <- function(inraster,my_dates, mYear, spatiaNormPercentil
                     
                     bba <- after_disturba$x
                     bbax <- replace(bba,  bba > qt, 0)
+                    bbax1 <- replace(bbax,  is.na(bbax), 0)
                     xbbax <- replace(bbax,   bbax > 0, 1)
                     seq_sum <- function (x){
                       
@@ -336,29 +337,32 @@ stef_regrowth_monitor2 <- function(inraster,my_dates, mYear, spatiaNormPercentil
                     }
                     aax1 <-  seq_sum(xbbax)
                     
-                    print("I passed here")
-                    print(aax1[length(aax1)])
-                    print(aax1[length(aax1) -1] )
-                    print("What")
-                    if (aax1[length(aax1)] != 2 | aax1[length(aax1) -1] != 2){
-                    
-                      
-                    print("ALL Just fine")  
                     after_disturba$indexz <-seq(1, length(after_disturba$x),  by= 1)
                     
                     after_disturba$choco <- aax1
                     
-                    mz_con <- subset(after_disturba,  after_disturba$choco ==2)
+                    after_disturba2 <- subset(after_disturba, !is.na(after_disturba$x))
+                    print("I passed here")
+                    print(after_disturba2$choco[length(after_disturba2$choco)])
+                    print(after_disturba2$choco[length(after_disturba2$choco) -1] )
+                    print("What")
+                    if (after_disturba2$x[length(after_disturba2$x)] != 2 | after_disturba2$x[length(after_disturba2$x) -1] != 2){
+                    
+                      
+                    print("ALL Just fine")  
+                  
+                    
+                    mz_con <- subset(after_disturba2,  after_disturba2$choco ==2)
                     print("Yeah")
                     if (length(mz_con$indexz) != 0){
                     print("Ok")
                     anded <- mz_con$indexz[length(mz_con$indexz) ]
                     
-                    non_ext <-subset(after_disturba,  after_disturba$indexz > anded)
+                    non_ext <-subset(after_disturba2,  after_disturba2$indexz > anded)
                     print("Goooo")
                     }else{
                       
-                    non_ext <- after_disturba
+                    non_ext <- after_disturba2
                       
                     }
                     
@@ -366,25 +370,25 @@ stef_regrowth_monitor2 <- function(inraster,my_dates, mYear, spatiaNormPercentil
                     print("I was here")
                     if (time_length_after_regrowth_start >= minimumRegrowthTime){
                       print("Hello world")
-                      lastExtremes <- after_disturba$extreme[length(after_disturba$extreme)]
+                      lastExtremes <- after_disturba2$extreme[length(after_disturba2$extreme)]
                       extremes_at_disturbance <- xdata$extreme[sxz1]
                       extremes_at_start_regrowth <- non_ext$extreme[1]
                       
                       prsdcum_at_disturbance <- xdata$sdcum[sxz1]
-                      prsdcum_last <- after_disturba$sdcum[length(after_disturba$sdcum)]
+                      prsdcum_last <- after_disturba2$sdcum[length(after_disturba2$sdcum)]
                       prsdcum_at_start_regrowth <- non_ext$sdcum[1]
                       print("shall see")
                       
                       pixelCumsum_at_disturbance <- xdata$pixelCumsum[sxz1]
-                      pixelCumsum_last <- after_disturba$pixelCumsum[length(after_disturba$pixelCumsum)]
+                      pixelCumsum_last <- after_disturba2$pixelCumsum[length(after_disturba2$pixelCumsum)]
                       pixelCumsum_at_start_regrowth <- non_ext$pixelCumsum[1]
                       print("I am home")
                       prPnCV_at_disturbance <- xdata$PnCV[sxz1]
-                      prPnCV_last <- after_disturba$PnCV[length(after_disturba$PnCV)]
+                      prPnCV_last <- after_disturba2$PnCV[length(after_disturba2$PnCV)]
                       prPnCV_at_start_regrowth <- non_ext$prPnCV[1]
                       
                       patch_at_disturbance <- xdata$y[sxz1]
-                      patch_last <- after_disturba$y[length(after_disturba$y)]
+                      patch_last <- after_disturba2$y[length(after_disturba2$y)]
                       patch_at_start_regrowth <- non_ext$patch[1]
                       print("Welcome")
                       sdTrend <- lmModelSlope
