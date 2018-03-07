@@ -316,7 +316,7 @@ stef_regrowth_monitor2 <- function(inraster,my_dates, mYear, spatiaNormPercentil
                     bba <- after_disturba$x
                     bbax <- replace(bba,  bba > qt, 0)
                     bbax1 <- replace(bbax,  is.na(bbax), 0)
-                    xbbax <- replace(bbax,   bbax > 0, 1)
+                    xbbax <- replace(bbax1,   bbax1 > 0, 1)
                     seq_sum <- function (x){
                       
                       if (length(x) > 1){
@@ -463,6 +463,9 @@ stef_regrowth_monitor2 <- function(inraster,my_dates, mYear, spatiaNormPercentil
 #                     }
 #                     
 #                     
+                    }else{
+                      dav <- as.numeric(samo)
+                      chan <- 0
                   }
                   }else{
                     
