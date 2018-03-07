@@ -369,28 +369,46 @@ stef_regrowth_monitor2 <- function(inraster,my_dates, mYear, spatiaNormPercentil
                     time_length_after_regrowth_start <- non_ext$deci_date[length(non_ext$deci_date)]  - non_ext$deci_date[1] 
                     print("I was here")
                     if (time_length_after_regrowth_start >= minimumRegrowthTime){
-                      print("Hello world")
+                      print("time and slope")
+                      
+                      print(currentv,sdTrend,diff_distarbaDate_LastDate, time_length_after_regrowth_start)
+                      
+                      print("Extreme")
                       lastExtremes <- after_disturba2$extreme[length(after_disturba2$extreme)]
                       extremes_at_disturbance <- xdata$extreme[sxz1]
                       extremes_at_start_regrowth <- non_ext$extreme[1]
                       
+                      print(extremes_at_disturbance ,extremes_at_start_regrowth,lastExtremes)
+                      
+                      print("spatio-temp cumsum")
                       prsdcum_at_disturbance <- xdata$sdcum[sxz1]
                       prsdcum_last <- after_disturba2$sdcum[length(after_disturba2$sdcum)]
                       prsdcum_at_start_regrowth <- non_ext$sdcum[1]
-                      print("shall see")
+                      
+                      print(prsdcum_at_disturbance,prsdcum_at_start_regrowth,prsdcum_last)
+                      
+                      print("tempo cumsum")
                       
                       pixelCumsum_at_disturbance <- xdata$pixelCumsum[sxz1]
                       pixelCumsum_last <- after_disturba2$pixelCumsum[length(after_disturba2$pixelCumsum)]
                       pixelCumsum_at_start_regrowth <- non_ext$pixelCumsum[1]
-                      print("I am home")
+                      
+                      print(pixelCumsum_at_disturbance,pixelCumsum_at_start_regrowth,pixelCumsum_last)
+                      
+                      print("CV")
+                      
                       prPnCV_at_disturbance <- xdata$PnCV[sxz1]
                       prPnCV_last <- after_disturba2$PnCV[length(after_disturba2$PnCV)]
                       prPnCV_at_start_regrowth <- non_ext$prPnCV[1]
                       
+                      print(prPnCV_at_disturbance,prPnCV_at_start_regrowth,prPnCV_last)
+                      
+                      print("patch")
                       patch_at_disturbance <- xdata$y[sxz1]
                       patch_last <- after_disturba2$y[length(after_disturba2$y)]
                       patch_at_start_regrowth <- non_ext$patch[1]
-                      print("Welcome")
+                     
+                      print(patch_at_disturbance,patch_at_start_regrowth,patch_last)
                       sdTrend <- lmModelSlope
                                           
                       dav <- c(currentv,diff_distarbaDate_LastDate,time_length_after_regrowth_start, sdTrend,patch_at_disturbance,patch_at_start_regrowth,patch_last, 
