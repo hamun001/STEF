@@ -370,6 +370,7 @@ stef_regrowth_monitor2 <- function(inraster,my_dates, mYear, spatiaNormPercentil
                       prsdcum_at_disturbance <- xdata$sdcum[sxz1]
                       prsdcum_last <- after_disturba$sdcum[length(after_disturba$sdcum)]
                       prsdcum_at_start_regrowth <- non_ext$sdcum[1]
+                      print("shall see")
                       
                       pixelCumsum_at_disturbance <- xdata$pixelCumsum[sxz1]
                       pixelCumsum_last <- after_disturba$pixelCumsum[length(after_disturba$pixelCumsum)]
