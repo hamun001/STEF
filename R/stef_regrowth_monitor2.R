@@ -337,6 +337,9 @@ stef_regrowth_monitor2 <- function(inraster,my_dates, mYear, spatiaNormPercentil
                     aax1 <-  seq_sum(xbbax)
                     
                     print("I passed here")
+                    print(aax1[length(aax1)])
+                    print(aax1[length(aax1) -1] )
+                    print("What")
                     if (aax1[length(aax1)] != 2 | aax1[length(aax1) -1] != 2){
                     
                       
