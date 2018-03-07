@@ -342,8 +342,12 @@ stef_regrowth_monitor2 <- function(inraster,my_dates, mYear, spatiaNormPercentil
                     after_disturba$choco <- aax1
                     
                     after_disturba2 <- subset(after_disturba, !is.na(after_disturba$x))
+                    
+                    senz <- subset(after_disturba2, after_disturba2$choco !=2)
+                    
+                    if (length(senz$choco) > 0){
 
-                    if (after_disturba2$x[length(after_disturba2$x)] != 2 | after_disturba2$x[length(after_disturba2$x) -1] != 2){
+                    if (after_disturba2$choco[length(after_disturba2$choco)] != 2 | after_disturba2$choco[(length(after_disturba2$choco) -1)] != 2){
                     
                     mz_con <- subset(after_disturba2,  after_disturba2$choco ==2)
                     if (length(mz_con$indexz) != 0){
@@ -356,7 +360,9 @@ stef_regrowth_monitor2 <- function(inraster,my_dates, mYear, spatiaNormPercentil
                       
                     }
                     
+                    if (length(non_ext$deci_date) > 0){
                     time_length_after_regrowth_start <- non_ext$deci_date[length(non_ext$deci_date)]  - non_ext$deci_date[1] 
+                    
                     if (time_length_after_regrowth_start >= minimumRegrowthTime){
 
                       lastExtremes <- after_disturba2$extreme[length(after_disturba2$extreme)]
@@ -391,7 +397,10 @@ stef_regrowth_monitor2 <- function(inraster,my_dates, mYear, spatiaNormPercentil
                       chan <- 0
                       
                     }
-                    
+                    }else{
+                      dav <- as.numeric(samo)
+                      chan <- 0
+                    }
                     # start from here
 #                     
 #                     sz_con <- length(subset(aax1, aax1 ==2))
@@ -452,7 +461,11 @@ stef_regrowth_monitor2 <- function(inraster,my_dates, mYear, spatiaNormPercentil
                     }else{
                       dav <- as.numeric(samo)
                       chan <- 0
-                  }
+                    }
+                    }else{
+                      dav <- as.numeric(samo)
+                      chan <- 0 
+                    }
                   }else{
                     
                     dav <- as.numeric(samo)
