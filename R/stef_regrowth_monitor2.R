@@ -369,10 +369,7 @@ stef_regrowth_monitor2 <- function(inraster,my_dates, mYear, spatiaNormPercentil
                     time_length_after_regrowth_start <- non_ext$deci_date[length(non_ext$deci_date)]  - non_ext$deci_date[1] 
                     print("I was here")
                     if (time_length_after_regrowth_start >= minimumRegrowthTime){
-                      print("time and slope")
-                      
-                      print(currentv,sdTrend,diff_distarbaDate_LastDate, time_length_after_regrowth_start)
-                      
+
                       print("Extreme")
                       lastExtremes <- after_disturba2$extreme[length(after_disturba2$extreme)]
                       extremes_at_disturbance <- xdata$extreme[sxz1]
@@ -410,6 +407,10 @@ stef_regrowth_monitor2 <- function(inraster,my_dates, mYear, spatiaNormPercentil
                      
                       print(patch_at_disturbance,patch_at_start_regrowth,patch_last)
                       sdTrend <- lmModelSlope
+                      print("time and slope")
+                      
+                      print(currentv,sdTrend,diff_distarbaDate_LastDate, time_length_after_regrowth_start)
+                      
                                           
                       dav <- c(currentv,diff_distarbaDate_LastDate,time_length_after_regrowth_start, sdTrend,patch_at_disturbance,patch_at_start_regrowth,patch_last, 
                                extremes_at_disturbance,extremes_at_start_regrowth,lastExtremes,prsdcum_at_disturbance,prsdcum_at_start_regrowth ,prsdcum_last,
