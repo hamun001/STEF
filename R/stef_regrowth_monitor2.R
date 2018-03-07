@@ -340,19 +340,19 @@ stef_regrowth_monitor2 <- function(inraster,my_dates, mYear, spatiaNormPercentil
                     if (aax1[length(aax1)] != 2 | aax1[length(aax1) -1] != 2){
                     
                       
-                      
+                    print("ALL Just fine")  
                     after_disturba$indexz <-seq(1, length(after_disturba$x),  by= 1)
                     
                     after_disturba$choco <- aax1
                     
                     mz_con <- subset(after_disturba,  after_disturba$choco ==2)
-                    
+                    print("Yeah")
                     if (length(mz_con$indexz) != 0){
-                    
+                    print("Ok")
                     anded <- mz_con$indexz[length(mz_con$indexz) ]
                     
                     non_ext <-subset(after_disturba,  after_disturba$indexz > anded)
-                    
+                    print("Goooo")
                     }else{
                       
                     non_ext <- after_disturba
