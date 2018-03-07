@@ -362,7 +362,7 @@ stef_regrowth_monitor2 <- function(inraster,my_dates, mYear, spatiaNormPercentil
                     time_length_after_regrowth_start <- non_ext$deci_date[length(non_ext$deci_date)]  - non_ext$deci_date[1] 
                     print("I was here")
                     if (time_length_after_regrowth_start >= minimumRegrowthTime){
-                      
+                      print("Hello world")
                       lastExtremes <- after_disturba$extreme[length(after_disturba$extreme)]
                       extremes_at_disturbance <- xdata$extreme[sxz1]
                       extremes_at_start_regrowth <- non_ext$extreme[1]
@@ -374,7 +374,7 @@ stef_regrowth_monitor2 <- function(inraster,my_dates, mYear, spatiaNormPercentil
                       pixelCumsum_at_disturbance <- xdata$pixelCumsum[sxz1]
                       pixelCumsum_last <- after_disturba$pixelCumsum[length(after_disturba$pixelCumsum)]
                       pixelCumsum_at_start_regrowth <- non_ext$pixelCumsum[1]
-                      
+                      print("I am home")
                       prPnCV_at_disturbance <- xdata$PnCV[sxz1]
                       prPnCV_last <- after_disturba$PnCV[length(after_disturba$PnCV)]
                       prPnCV_at_start_regrowth <- non_ext$prPnCV[1]
@@ -382,14 +382,14 @@ stef_regrowth_monitor2 <- function(inraster,my_dates, mYear, spatiaNormPercentil
                       patch_at_disturbance <- xdata$y[sxz1]
                       patch_last <- after_disturba$y[length(after_disturba$y)]
                       patch_at_start_regrowth <- non_ext$patch[1]
-                      
+                      print("Welcome")
                       sdTrend <- lmModelSlope
                                           
                       dav <- c(currentv,diff_distarbaDate_LastDate,time_length_after_regrowth_start, sdTrend,patch_at_disturbance,patch_at_start_regrowth,patch_last, 
                                extremes_at_disturbance,extremes_at_start_regrowth,lastExtremes,prsdcum_at_disturbance,prsdcum_at_start_regrowth ,prsdcum_last,
                                pixelCumsum_at_disturbance,pixelCumsum_at_start_regrowth,pixelCumsum_last,prPnCV_at_disturbance,prPnCV_at_start_regrowth,prPnCV_last)                     
                       
-                      
+                      print(dav)
                       chan <- 0
                       
                     }else{
@@ -486,7 +486,7 @@ stef_regrowth_monitor2 <- function(inraster,my_dates, mYear, spatiaNormPercentil
         dav <- as.numeric(samo)
       }
     }else{dav <- as.numeric(samo)}
-    print(dav)
+    #print(dav)
     return (dav)
   }
   
