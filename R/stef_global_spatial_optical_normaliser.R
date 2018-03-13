@@ -47,6 +47,44 @@
 #'
 #'
 #'
+# 
+# stef_global_spatial_OPTICAL_normaliser <- function(inraster,  isStack = T, xpercentile =0.95, output_filename= NULL){
+#   if (xpercentile > 1){
+#     print("xpercentile  can't be greater than 1. defaulting to  0.95")
+#     xpercentile <- 0.95
+#   }
+#   
+#   if (!is.null(output_filename)){
+#     
+#     if (isStack){
+#       #inraster <- brick(inraster)
+#       inRast  <- subset(inraster, 1, drop = F)
+#       xPer <- quantile(inRast,  probs = xpercentile, type=7,names = FALSE)
+#       norInRast <- inRast/xPer
+#       
+#       for (i in 2: nlayers(inraster)){
+#         inRast2 <- subset(inraster, i, drop =F)
+#         xPer2 <- quantile(inRast2,  probs =xpercentile, type=7,names = FALSE)
+#         norInRast2 <- inRast2/xPer2
+#         norInRast <- stack(norInRast,norInRast2)
+#       }
+#       
+#     }else{
+#       xPer <- quantile(inraster,  probs = xpercentile, type=7,names = FALSE)
+#       norInRast <- inRast/xPer
+#     }
+#     
+#     writeRaster(norInRast, filename=output_filename,datatype ="FLT4S", overwrite=TRUE) 
+#     
+#   }else{ 
+#     print("please provide the output filename with file format")
+#     stop
+#     
+#   }
+#   
+# } 
+
+
 
 stef_global_spatial_OPTICAL_normaliser <- function(inraster,  isStack = T, xpercentile =0.95, output_filename= NULL){
   if (xpercentile > 1){
@@ -54,7 +92,7 @@ stef_global_spatial_OPTICAL_normaliser <- function(inraster,  isStack = T, xperc
     xpercentile <- 0.95
   }
   
-  if (!is.null(output_filename)){
+  #if (!is.null(output_filename)){
     
     if (isStack){
       #inraster <- brick(inraster)
@@ -74,13 +112,17 @@ stef_global_spatial_OPTICAL_normaliser <- function(inraster,  isStack = T, xperc
       norInRast <- inRast/xPer
     }
     
-    writeRaster(norInRast, filename=output_filename,datatype ="FLT4S", overwrite=TRUE) 
+    #writeRaster(norInRast, filename=output_filename,datatype ="FLT4S", overwrite=TRUE) 
     
-  }else{ 
-    print("please provide the output filename with file format")
-    stop
-    
-  }
+#   }else{ 
+#     print("please provide the output filename with file format")
+#     stop
+#     
+#   }
+  
+  return(norInRast)
   
 } 
+
+
 
